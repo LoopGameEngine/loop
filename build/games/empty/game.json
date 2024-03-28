@@ -1,0 +1,26 @@
+{
+	"tagList": [],
+	"sceneList": [
+		{
+			"name": "Scene_1",
+			"actorList": []
+		}
+	],
+	"name": "Untitled Game",
+	"displayWidth": 800,
+	"displayHeight": 480,
+	"cameraX": 0,
+	"cameraY": 0,
+	"cameraAngle": 0,
+	"cameraZoom": 1,
+	"backgroundColor": "#ffffff",
+	"soundOn": false,
+	"soundtrack": "",
+	"volume": 1,
+	"start": 0,
+	"pan": 0,
+	"loop": false,
+	"physicsOn": false,
+	"gravityX": 0,
+	"gravityY": 0
+}
