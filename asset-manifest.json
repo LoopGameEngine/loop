@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.js": "/loop/static/js/main.e6fd5ac2.js",
-    "static/media/hero.gif": "/loop/static/media/hero.8fc47a2c7fc76f2ff4d5.gif",
-    "static/media/loop.png": "/loop/static/media/loop.3ad886a5ccbf2e8a4619.png",
-    "static/media/chat.png": "/loop/static/media/chat.ebd48d71b0cfe6bd5b1f.png",
-    "static/media/tic-toc.png": "/loop/static/media/tic-toc.b18bb7bb5044c5d84069.png",
-    "static/media/discord-mark-white.svg": "/loop/static/media/discord-mark-white.78e7bdfb55259fd6ad708ce2663a0c0b.svg",
-    "index.html": "/loop/index.html",
-    "main.e6fd5ac2.js.map": "/loop/static/js/main.e6fd5ac2.js.map"
+    "main.js": "./static/js/main.f9c305f7.js",
+    "static/media/hero.gif": "./static/media/hero.8fc47a2c7fc76f2ff4d5.gif",
+    "static/media/loop.png": "./static/media/loop.3ad886a5ccbf2e8a4619.png",
+    "static/media/chat.png": "./static/media/chat.ebd48d71b0cfe6bd5b1f.png",
+    "static/media/tic-toc.png": "./static/media/tic-toc.b18bb7bb5044c5d84069.png",
+    "static/media/discord-mark-white.svg": "./static/media/discord-mark-white.78e7bdfb55259fd6ad708ce2663a0c0b.svg",
+    "index.html": "./index.html",
+    "main.f9c305f7.js.map": "./static/js/main.f9c305f7.js.map"
   },
   "entrypoints": [
-    "static/js/main.e6fd5ac2.js"
+    "static/js/main.f9c305f7.js"
   ]
 }
