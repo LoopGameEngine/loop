@@ -1,0 +1,2056 @@
+{
+	"tagList": [
+		"player",
+		"floor",
+		"enemy",
+		"end"
+	],
+	"sceneList": [
+		{
+			"name": "Init",
+			"actorList": [
+				{
+					"scriptList": [
+						{
+							"nodeList": [
+								{
+									"type": "Check",
+									"parameters": {
+										"property": "Game.paused"
+									},
+									"nodeListTrue": [],
+									"nodeListFalse": [
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Game.physicsOn",
+												"value": true
+											}
+										},
+										{
+											"type": "Keyboard",
+											"parameters": {
+												"key": "Escape",
+												"key_Mode": "Down"
+											},
+											"nodeListTrue": [
+												{
+													"type": "Edit",
+													"parameters": {
+														"property": "Game.paused",
+														"value": true
+													}
+												},
+												{
+													"type": "Spawn",
+													"parameters": {
+														"actor": "menu",
+														"x": 0,
+														"y": 0,
+														"angle": 0
+													}
+												},
+												{
+													"type": "Edit",
+													"parameters": {
+														"property": "Game.physicsOn",
+														"value": false
+													}
+												}
+											],
+											"nodeListFalse": []
+										}
+									]
+								}
+							],
+							"name": "Script_1"
+						}
+					],
+					"key": 0,
+					"sleeping": false,
+					"x": 0,
+					"y": 0,
+					"width": 1000,
+					"height": 750,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": true,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": true,
+					"image": "BG1.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "${Game.paused}",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "background"
+				},
+				{
+					"scriptList": [],
+					"key": 0,
+					"sleeping": false,
+					"x": -241,
+					"y": -208,
+					"width": 320,
+					"height": 64,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "floor",
+					"spriteOn": true,
+					"image": "ZigzagGrass_Squar.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 5,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": true,
+					"type": "Static",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "Actor_2"
+				},
+				{
+					"scriptList": [],
+					"key": 0,
+					"sleeping": false,
+					"x": 214,
+					"y": -208,
+					"width": 320,
+					"height": 64,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "floor",
+					"spriteOn": true,
+					"image": "ZigzagGrass_Squar.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 5,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": true,
+					"type": "Static",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "Actor_2_copy"
+				},
+				{
+					"scriptList": [],
+					"key": 0,
+					"sleeping": false,
+					"x": 665,
+					"y": -208,
+					"width": 320,
+					"height": 64,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "floor",
+					"spriteOn": true,
+					"image": "ZigzagGrass_Squar.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 5,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": true,
+					"type": "Static",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "Actor_2_copy_2"
+				},
+				{
+					"scriptList": [],
+					"key": 0,
+					"sleeping": false,
+					"x": 1116.0071691912267,
+					"y": -209.5930126818007,
+					"width": 320,
+					"height": 64,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "floor",
+					"spriteOn": true,
+					"image": "ZigzagGrass_Squar.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 5,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": true,
+					"type": "Static",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "Actor_2_copy_3"
+				},
+				{
+					"scriptList": [],
+					"key": 0,
+					"sleeping": false,
+					"x": -423.7448889153731,
+					"y": 0.27502697163552625,
+					"width": 50,
+					"height": 479.39911358165676,
+					"scaleX": 1,
+					"scaleY": 9.587982271633136,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": false,
+					"image": "",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": true,
+					"type": "Static",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "wall"
+				},
+				{
+					"scriptList": [],
+					"key": 0,
+					"sleeping": false,
+					"x": 1234.502320661988,
+					"y": -90.68307022093083,
+					"width": 40,
+					"height": 40,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "enemy,end",
+					"spriteOn": true,
+					"image": "ExclamationMarkBlock_Yellow.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": true,
+					"type": "Static",
+					"fixedAngle": true,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "wall_copy"
+				},
+				{
+					"scriptList": [],
+					"key": 0,
+					"sleeping": false,
+					"x": 319.0629481338598,
+					"y": 200,
+					"width": 60.50168323527725,
+					"height": 50,
+					"scaleX": 1.210033664705545,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": true,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": false,
+					"image": "",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": true,
+					"text": "${Game.coins}",
+					"font": "Tahoma",
+					"size": 20,
+					"fill": "#d8af52",
+					"style": "Bold",
+					"align": "Right",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "coinsControler",
+					"coins": 0
+				},
+				{
+					"scriptList": [],
+					"key": 0,
+					"sleeping": false,
+					"x": -5.883991379280673,
+					"y": 4.877116000721344,
+					"width": 264.0189813086153,
+					"height": 50,
+					"scaleX": 5.280379626172306,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": true,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": false,
+					"image": "",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "You Win!!!",
+					"font": "Arial",
+					"size": 50,
+					"fill": "#5f2607",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "You_Win",
+					"coins": 0
+				},
+				{
+					"scriptList": [
+						{
+							"nodeList": [
+								{
+									"type": "Collision",
+									"parameters": {
+										"tags": "player"
+									},
+									"nodeListTrue": [
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Game.coins",
+												"value": "Game.coins+1"
+											}
+										},
+										{
+											"type": "Delete",
+											"parameters": {}
+										}
+									],
+									"nodeListFalse": []
+								}
+							],
+							"name": "Script_1"
+						}
+					],
+					"key": 0,
+					"sleeping": false,
+					"x": 168,
+					"y": -133,
+					"width": 21,
+					"height": 21,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": true,
+					"image": "CoinYellow.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "coin"
+				},
+				{
+					"scriptList": [
+						{
+							"nodeList": [
+								{
+									"type": "Collision",
+									"parameters": {
+										"tags": "player"
+									},
+									"nodeListTrue": [
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Game.coins",
+												"value": "Game.coins+1"
+											}
+										},
+										{
+											"type": "Delete",
+											"parameters": {}
+										}
+									],
+									"nodeListFalse": []
+								}
+							],
+							"name": "Script_1"
+						}
+					],
+					"key": 0,
+					"sleeping": false,
+					"x": 288.61959291281556,
+					"y": -130.3298613915295,
+					"width": 21,
+					"height": 21,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": true,
+					"image": "CoinYellow.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "coin_copy"
+				},
+				{
+					"scriptList": [
+						{
+							"nodeList": [
+								{
+									"type": "Collision",
+									"parameters": {
+										"tags": "player"
+									},
+									"nodeListTrue": [
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Game.coins",
+												"value": "Game.coins+1"
+											}
+										},
+										{
+											"type": "Delete",
+											"parameters": {}
+										}
+									],
+									"nodeListFalse": []
+								}
+							],
+							"name": "Script_1"
+						}
+					],
+					"key": 0,
+					"sleeping": false,
+					"x": 742,
+					"y": -133,
+					"width": 21,
+					"height": 21,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": true,
+					"image": "CoinYellow.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "coin_copy_3"
+				},
+				{
+					"scriptList": [
+						{
+							"nodeList": [
+								{
+									"type": "Collision",
+									"parameters": {
+										"tags": "player"
+									},
+									"nodeListTrue": [
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Game.coins",
+												"value": "Game.coins+1"
+											}
+										},
+										{
+											"type": "Delete",
+											"parameters": {}
+										}
+									],
+									"nodeListFalse": []
+								}
+							],
+							"name": "Script_1"
+						}
+					],
+					"key": 0,
+					"sleeping": false,
+					"x": 1072.2648064194293,
+					"y": -133,
+					"width": 21,
+					"height": 21,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": true,
+					"image": "CoinYellow.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "coin_copy_4"
+				},
+				{
+					"scriptList": [
+						{
+							"nodeList": [
+								{
+									"type": "Collision",
+									"parameters": {
+										"tags": "player"
+									},
+									"nodeListTrue": [
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Game.coins",
+												"value": "Game.coins+1"
+											}
+										},
+										{
+											"type": "Delete",
+											"parameters": {}
+										}
+									],
+									"nodeListFalse": []
+								}
+							],
+							"name": "Script_1"
+						}
+					],
+					"key": 0,
+					"sleeping": false,
+					"x": 880.9319772991533,
+					"y": -17.8840140944493,
+					"width": 21,
+					"height": 21,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": true,
+					"image": "CoinYellow.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "coin_copy_5"
+				},
+				{
+					"scriptList": [
+						{
+							"nodeList": [
+								{
+									"type": "Collision",
+									"parameters": {
+										"tags": "player"
+									},
+									"nodeListTrue": [
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Game.coins",
+												"value": "Game.coins+1"
+											}
+										},
+										{
+											"type": "Delete",
+											"parameters": {}
+										}
+									],
+									"nodeListFalse": []
+								}
+							],
+							"name": "Script_1"
+						}
+					],
+					"key": 0,
+					"sleeping": false,
+					"x": 586,
+					"y": -133,
+					"width": 21,
+					"height": 21,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": true,
+					"image": "CoinYellow.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "coin_copy_2"
+				},
+				{
+					"scriptList": [],
+					"key": 0,
+					"sleeping": false,
+					"x": 370.52056531850263,
+					"y": 200,
+					"width": 21,
+					"height": 21,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": true,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": true,
+					"image": "CoinYellow.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "Actor_13"
+				},
+				{
+					"scriptList": [
+						{
+							"nodeList": [
+								{
+									"type": "Check",
+									"parameters": {
+										"property": "Game.paused"
+									},
+									"nodeListTrue": [],
+									"nodeListFalse": [
+										{
+											"type": "Keyboard",
+											"parameters": {
+												"key": "ArrowRight",
+												"key_Mode": "Pressed"
+											},
+											"nodeListTrue": [
+												{
+													"type": "Edit",
+													"parameters": {
+														"property": "Me.flipX",
+														"value": false
+													}
+												},
+												{
+													"type": "Move",
+													"parameters": {
+														"speed": "300",
+														"angle": 0
+													}
+												},
+												{
+													"type": "Animate",
+													"parameters": {
+														"animation": "Purple_Right1.png,Purple_Right2.png,Purple_Right3.png",
+														"fps": "10"
+													}
+												}
+											],
+											"nodeListFalse": [
+												{
+													"type": "Keyboard",
+													"parameters": {
+														"key": "ArrowLeft",
+														"key_Mode": "Pressed"
+													},
+													"nodeListTrue": [
+														{
+															"type": "Edit",
+															"parameters": {
+																"property": "Me.flipX",
+																"value": true
+															}
+														},
+														{
+															"type": "Move",
+															"parameters": {
+																"speed": "-300",
+																"angle": 0
+															}
+														},
+														{
+															"type": "Animate",
+															"parameters": {
+																"animation": "Purple_Right1.png,Purple_Right2.png,Purple_Right3.png",
+																"fps": "10"
+															}
+														}
+													],
+													"nodeListFalse": [
+														{
+															"type": "Animate",
+															"parameters": {
+																"animation": "Purple_Front1.png",
+																"fps": "3"
+															}
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "Keyboard",
+											"parameters": {
+												"key": "Space",
+												"key_Mode": "Down"
+											},
+											"nodeListTrue": [
+												{
+													"type": "Collision",
+													"parameters": {
+														"tags": "floor"
+													},
+													"nodeListTrue": [
+														{
+															"type": "Push",
+															"parameters": {
+																"force": "30",
+																"angle": "90"
+															}
+														}
+													],
+													"nodeListFalse": []
+												}
+											],
+											"nodeListFalse": []
+										}
+									]
+								}
+							],
+							"name": "movement"
+						},
+						{
+							"nodeList": [
+								{
+									"type": "Compare",
+									"parameters": {
+										"value_1": "Me.x",
+										"operation": "Greater",
+										"value_2": "0"
+									},
+									"nodeListTrue": [
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Game.cameraX",
+												"value": "Me.x"
+											}
+										}
+									],
+									"nodeListFalse": []
+								}
+							],
+							"name": "camera"
+						},
+						{
+							"nodeList": [
+								{
+									"type": "Collision",
+									"parameters": {
+										"tags": "end"
+									},
+									"nodeListTrue": [
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "You_Win.textOn",
+												"value": true
+											}
+										},
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Game.paused",
+												"value": true
+											}
+										}
+									],
+									"nodeListFalse": [
+										{
+											"type": "Collision",
+											"parameters": {
+												"tags": "enemy"
+											},
+											"nodeListTrue": [
+												{
+													"type": "Compare",
+													"parameters": {
+														"value_1": "Game.lives",
+														"operation": "Greater",
+														"value_2": "1"
+													},
+													"nodeListTrue": [
+														{
+															"type": "Edit",
+															"parameters": {
+																"property": "Game.lives",
+																"value": "Game.lives-1"
+															}
+														},
+														{
+															"type": "Edit",
+															"parameters": {
+																"property": "Game.currentScene",
+																"value": "Init"
+															}
+														}
+													],
+													"nodeListFalse": [
+														{
+															"type": "Edit",
+															"parameters": {
+																"property": "You_Win.textOn",
+																"value": true
+															}
+														},
+														{
+															"type": "Edit",
+															"parameters": {
+																"property": "You_Win.text",
+																"value": "\"You Lose!!!\""
+															}
+														}
+													]
+												}
+											],
+											"nodeListFalse": []
+										}
+									]
+								}
+							],
+							"name": "dead"
+						}
+					],
+					"key": 0,
+					"sleeping": true,
+					"x": -344.6503234493977,
+					"y": 294.0152317265707,
+					"width": 66,
+					"height": 80,
+					"scaleX": 0.5,
+					"scaleY": 0.4968944099378882,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "player",
+					"spriteOn": true,
+					"image": "Purple_Front1.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "${Game.lives}",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 42,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": true,
+					"type": "Dynamic",
+					"fixedAngle": true,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "Player"
+				},
+				{
+					"scriptList": [
+						{
+							"nodeList": [
+								{
+									"type": "Compare",
+									"parameters": {
+										"value_1": "Game.lives",
+										"operation": "Less",
+										"value_2": "1"
+									},
+									"nodeListTrue": [
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Me.image",
+												"value": "LifeHearth_Empty.png"
+											}
+										}
+									],
+									"nodeListFalse": []
+								}
+							],
+							"name": "Script_1"
+						}
+					],
+					"key": 0,
+					"sleeping": false,
+					"x": -360,
+					"y": 200,
+					"width": 24,
+					"height": 20,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": true,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": true,
+					"image": "LifeHearth_Full.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "Actor_12"
+				},
+				{
+					"scriptList": [
+						{
+							"nodeList": [
+								{
+									"type": "Compare",
+									"parameters": {
+										"value_1": "Game.lives",
+										"operation": "Less",
+										"value_2": "2"
+									},
+									"nodeListTrue": [
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Me.image",
+												"value": "LifeHearth_Empty.png"
+											}
+										}
+									],
+									"nodeListFalse": []
+								}
+							],
+							"name": "Script_1"
+						}
+					],
+					"key": 0,
+					"sleeping": false,
+					"x": -320,
+					"y": 200,
+					"width": 24,
+					"height": 20,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": true,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": true,
+					"image": "LifeHearth_Full.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "Actor_12_copy"
+				},
+				{
+					"scriptList": [
+						{
+							"nodeList": [
+								{
+									"type": "Compare",
+									"parameters": {
+										"value_1": "Game.lives",
+										"operation": "Less",
+										"value_2": "3"
+									},
+									"nodeListTrue": [
+										{
+											"type": "Animate",
+											"parameters": {
+												"animation": "LifeHearth_Empty.png",
+												"fps": "1"
+											}
+										}
+									],
+									"nodeListFalse": []
+								}
+							],
+							"name": "Script_1"
+						}
+					],
+					"key": 0,
+					"sleeping": false,
+					"x": -280,
+					"y": 200,
+					"width": 24,
+					"height": 20,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": true,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": true,
+					"image": "LifeHearth_Full.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "Actor_12_copy_2"
+				},
+				{
+					"scriptList": [],
+					"key": 0,
+					"sleeping": false,
+					"x": -14.051535712813347,
+					"y": -233,
+					"width": 128,
+					"height": 49,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "enemy",
+					"spriteOn": true,
+					"image": "SpearsUp_Gray.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 2,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "Actor_16"
+				},
+				{
+					"scriptList": [],
+					"key": 0,
+					"sleeping": false,
+					"x": 438.9982426147099,
+					"y": -233,
+					"width": 128,
+					"height": 49,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "enemy",
+					"spriteOn": true,
+					"image": "SpearsUp_Gray.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 2,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 0.5,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "Actor_16_copy"
+				},
+				{
+					"scriptList": [],
+					"key": 0,
+					"sleeping": false,
+					"x": 898.3566360777204,
+					"y": -304.607051393054,
+					"width": 215.85904654409077,
+					"height": 50,
+					"scaleX": 4.317180930881816,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": false,
+					"image": "",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": true,
+					"type": "Static",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 1,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "Actor_21"
+				},
+				{
+					"scriptList": [
+						{
+							"nodeList": [
+								{
+									"type": "Animate",
+									"parameters": {
+										"animation": "flyMan_fly.png,flyMan_jump.png,flyMan_stand.png",
+										"fps": "12"
+									}
+								}
+							],
+							"name": "Script_1"
+						}
+					],
+					"key": 0,
+					"sleeping": false,
+					"x": 884.0606204498645,
+					"y": -113.998241679128,
+					"width": 60,
+					"height": 66,
+					"scaleX": 0.5,
+					"scaleY": 0.5,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "enemy",
+					"spriteOn": true,
+					"image": "flyMan_still_fly.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": true,
+					"type": "Dynamic",
+					"fixedAngle": true,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 1,
+					"friction": 0.5,
+					"restitution": 1,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "Actor_22"
+				},
+				{
+					"scriptList": [
+						{
+							"nodeList": [
+								{
+									"type": "Check",
+									"parameters": {
+										"property": "Me.init"
+									},
+									"nodeListTrue": [
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Game.coins",
+												"value": "0"
+											}
+										},
+										{
+											"type": "Spawn",
+											"parameters": {
+												"actor": "Player",
+												"x": 0,
+												"y": 0,
+												"angle": 0
+											}
+										},
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Me.init",
+												"value": false
+											}
+										}
+									],
+									"nodeListFalse": []
+								}
+							],
+							"name": "Script_1"
+						}
+					],
+					"key": 0,
+					"sleeping": false,
+					"x": -261.14099846198616,
+					"y": 101.00996937828225,
+					"width": 50,
+					"height": 50,
+					"scaleX": 1,
+					"scaleY": 1,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": false,
+					"image": "",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": false,
+					"text": "",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 0,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 0,
+					"friction": 0,
+					"restitution": 0,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "spawner",
+					"init": true
+				},
+				{
+					"scriptList": [
+						{
+							"nodeList": [
+								{
+									"type": "Animate",
+									"parameters": {
+										"animation": "Imagen1.png,Imagen2.png,Imagen3.png",
+										"fps": "0"
+									}
+								},
+								{
+									"type": "Keyboard",
+									"parameters": {
+										"key": "ArrowUp",
+										"key_Mode": "Down"
+									},
+									"nodeListTrue": [
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Me.key",
+												"value": "Me.key-1"
+											}
+										}
+									],
+									"nodeListFalse": [
+										{
+											"type": "Keyboard",
+											"parameters": {
+												"key": "ArrowDown",
+												"key_Mode": "Down"
+											},
+											"nodeListTrue": [
+												{
+													"type": "Edit",
+													"parameters": {
+														"property": "Me.key",
+														"value": "Me.key+1"
+													}
+												}
+											],
+											"nodeListFalse": []
+										}
+									]
+								},
+								{
+									"type": "Keyboard",
+									"parameters": {
+										"key": "Enter",
+										"key_Mode": "Down"
+									},
+									"nodeListTrue": [
+										{
+											"type": "Edit",
+											"parameters": {
+												"property": "Game.paused",
+												"value": false
+											}
+										},
+										{
+											"type": "Compare",
+											"parameters": {
+												"value_1": "Me.key",
+												"operation": "Equal",
+												"value_2": "0"
+											},
+											"nodeListTrue": [
+												{
+													"type": "Delete",
+													"parameters": {}
+												}
+											],
+											"nodeListFalse": [
+												{
+													"type": "Compare",
+													"parameters": {
+														"value_1": "Me.key",
+														"operation": "Equal",
+														"value_2": "1"
+													},
+													"nodeListTrue": [
+														{
+															"type": "Edit",
+															"parameters": {
+																"property": "Game.currentScene",
+																"value": "Init"
+															}
+														}
+													],
+													"nodeListFalse": [
+														{
+															"type": "Compare",
+															"parameters": {
+																"value_1": "Me.key",
+																"operation": "Equal",
+																"value_2": "2"
+															},
+															"nodeListTrue": [
+																{
+																	"type": "Edit",
+																	"parameters": {
+																		"property": "Game.exit",
+																		"value": true
+																	}
+																}
+															],
+															"nodeListFalse": []
+														}
+													]
+												}
+											]
+										}
+									],
+									"nodeListFalse": []
+								}
+							],
+							"name": "Script_1"
+						}
+					],
+					"key": 0,
+					"sleeping": true,
+					"x": 7.564305575484298,
+					"y": -579.8460722817392,
+					"width": 227.1,
+					"height": 238.2,
+					"scaleX": 0.3,
+					"scaleY": 0.3,
+					"angle": 0,
+					"screen": false,
+					"collider": "Box",
+					"tags": "",
+					"spriteOn": true,
+					"image": "Imagen1.png",
+					"color": "#ffffff",
+					"opacity": 1,
+					"flipX": false,
+					"flipY": false,
+					"scrollX": 0,
+					"scrollY": 0,
+					"tileX": 1,
+					"tileY": 1,
+					"textOn": true,
+					"text": "${Me.key}",
+					"font": "Arial",
+					"size": 30,
+					"fill": "#000000",
+					"style": "Normal",
+					"align": "Center",
+					"offsetX": 0,
+					"offsetY": 140,
+					"soundOn": false,
+					"sound": "",
+					"start": 0,
+					"volume": 1,
+					"pan": 0,
+					"loop": false,
+					"physicsOn": false,
+					"type": "Dynamic",
+					"fixedAngle": false,
+					"velocityX": 0,
+					"velocityY": 0,
+					"angularVelocity": 0,
+					"density": 0,
+					"friction": 0,
+					"restitution": 0,
+					"dampingLinear": 0,
+					"dampingAngular": 0,
+					"name": "menu"
+				}
+			]
+		}
+	],
+	"name": "Babe Plataformer",
+	"displayWidth": 800,
+	"displayHeight": 480,
+	"cameraX": 0,
+	"cameraY": 0,
+	"cameraAngle": 0,
+	"cameraZoom": 1,
+	"backgroundColor": "#ffffff",
+	"soundOn": false,
+	"soundtrack": "Preview.ogg",
+	"volume": 1,
+	"start": 0,
+	"pan": 0,
+	"loop": true,
+	"physicsOn": true,
+	"gravityX": 0,
+	"gravityY": -9.8,
+	"lives": 3,
+	"coins": 0,
+	"debug": false,
+	"paused": false
+}
