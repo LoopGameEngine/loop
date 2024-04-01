@@ -46,7 +46,7 @@ function Edit() {
         title="Editor"
         id="editorIframe"
         ref={iframeRef}
-        src="https://loopgameengine.github.io/loopsite/editor/index.html"
+        src="/editor/index.html"
         style={{ width: '100%', height: '100%', border: 'none' }}
       ></iframe>
     </div>
