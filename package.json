@@ -18,13 +18,13 @@
     "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://loopgameengine.github.io",
+  "homepage": "https://loop2d.com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build && shx cp CNAME build/",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
@@ -47,6 +47,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "gh-pages": "^6.1.1"
+    "gh-pages": "^6.1.1",
+    "shx": "^0.3.4"
   }
 }

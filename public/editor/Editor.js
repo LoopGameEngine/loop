@@ -73,6 +73,7 @@ class Editor {
     }
 
     playGame() {
+        this.canvasView.shouldRender = false;
         var gameData = {};
         Object.assign(gameData, this.model);
         gameData = JSON.stringify(gameData, (key, value) => { if (key != "id") return value }, '\t');
@@ -90,9 +91,8 @@ class Editor {
 
         if (this.playWindow && !this.playWindow.closed) this.playWindow.close();
         this.playWindow = window.open(url, "_blank", `width=${width}, height=${height}, left=${left}, top=${top}, location=no`);
-        this.playWindow.onload = () => {
-            this.playWindow.postMessage(messageData, window.location.origin);
-        }
+        this.playWindow.onload = () => { this.playWindow.postMessage(messageData, window.location.origin); };
+        window.addEventListener('focus', () => { this.canvasView.shouldRender = true; });
     }
 
     async saveGame(value) {
@@ -544,8 +544,13 @@ class Editor {
         this.assetDialog.updateSelectedAsset(assetIDList);
     }
 
-    uploadFile(file, type) {
-        File.upload(gameID, file, type);
+    async uploadFile(file, type) {
+        try {
+            await File.upload(gameID, file, type);
+            return; // Sale si la subida es exitosa
+        } catch (error) {
+            console.log(`Error al subir archivo: ${error}`);
+        }
     }
 
     addAsset(name, type) {

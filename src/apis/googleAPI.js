@@ -36,7 +36,6 @@ export async function login() {
         }
       };
         tokenClient.requestAccessToken();
-
     });
     return token;
   } catch (error) {

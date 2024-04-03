@@ -25,9 +25,6 @@ const Footer = () => {
     >
       <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
         <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-          <Typography variant="subtitle1" gutterBottom>
-            Social
-          </Typography>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Tooltip title="YouTube">
               <IconButton color="inherit" component="a" href="https://youtube.com">

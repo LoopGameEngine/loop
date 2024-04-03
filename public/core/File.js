@@ -1,4 +1,6 @@
 class File {
+    static uploadQueue = []; // Cola para almacenar las solicitudes de carga pendientes
+    static uploading = false;
 
     loadJson(gameId, callback) {
         gapi.client.drive.files.list({
@@ -120,7 +122,7 @@ class File {
                     gapi.client.request({
                         path: `/drive/v3/files/${gameID}`,
                         method: 'PATCH',
-                        body: {name: gameName }
+                        body: { name: gameName }
                     }).then(() => {
                         // Guardar el archivo json con el nuevo nombre
                         gapi.client.request({
@@ -153,73 +155,97 @@ class File {
         }).then(() => Command.removeAssetCmd(assetID, type))
     }
 
-    static upload(gameId, file, type) {
-        var folder;
-        switch (type) {
-            case "Image": folder = "images"; break;
-            case "Animation": folder = "images"; break;
-            case "Sound": folder = "sounds"; break;
-            case "ScreenShoot": folder = ""; break;
-        }
-        gapi.client.drive.files.list({
-            'q': `parents in "${gameId}" and name="${folder}"`
-        }).then(function (response) {
-            if (response.result.files.length > 0) {
-                var metadata = {
-                    'name': file.name,
-                    'parents': [response.result.files[0].id]
-                };
-                var boundary = '-------314159265358979323846';
-                var delimiter = "\r\n--" + boundary + "\r\n";
-                var close_delim = "\r\n--" + boundary + "--";
+    static async upload(gameId, file, type) {
+        // Agregar la solicitud de carga a la cola
+        File.uploadQueue.push({ gameId, file, type });
 
-                var reader = new FileReader();
-                reader.readAsBinaryString(file);
-                reader.onload = function (e) {
+        // Si la carga ya está en progreso, salir de la función
+        if (File.uploading) {
+            return;
+        }
+
+        // Iniciar el proceso de carga
+        File.uploading = true;
+        while (File.uploadQueue.length > 0) {
+            const { gameId, file, type } = File.uploadQueue.shift();
+            try {
+                const folder = type === "Image" || type === "Animation" ? "images" : type === "Sound" ? "sounds" : "";
+
+                const response = await gapi.client.drive.files.list({
+                    'q': `parents in "${gameId}" and name="${folder}"`
+                });
+
+                if (response.result.files.length > 0) {
+                    var metadata = {
+                        'name': file.name,
+                        'parents': [response.result.files[0].id]
+                    };
+                    var boundary = '-------314159265358979323846';
+                    var delimiter = "\r\n--" + boundary + "\r\n";
+                    var close_delim = "\r\n--" + boundary + "--";
+
+                    const readerResult = await new Promise((resolve, reject) => {
+                        var reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = error => reject(error);
+                        reader.readAsBinaryString(file);
+                    });
+
                     var contentType = file.type || 'application/octet-stream';
-                    var base64Data = btoa(reader.result);
-                    var multipartRequestBody =
-                        delimiter + 'Content-Type: application/json\r\n\r\n' + JSON.stringify(metadata) +
+                    var base64Data = btoa(readerResult);
+                    var multipartRequestBody = delimiter +
+                        'Content-Type: application/json\r\n\r\n' + JSON.stringify(metadata) +
                         delimiter + 'Content-Type: ' + contentType + '\r\n' + 'Content-Transfer-Encoding: base64\r\n' +
                         '\r\n' + base64Data + close_delim;
 
-                    gapi.client.request({
+                    const uploadResponse = await gapi.client.request({
                         'path': '/upload/drive/v3/files',
                         'method': 'POST',
                         'params': { 'uploadType': 'multipart' },
-                        'headers': { 'Content-Type': 'multipart/related; boundary="' + boundary + '"', },
+                        'headers': { 'Content-Type': `multipart/related; boundary="${boundary}"` },
                         'body': multipartRequestBody
-                    }).then(function (response) {
-                        gapi.client.drive.files.get({ // download from drive 
-                            fileId: response.result.id,
-                            alt: 'media'
-                        }).then(function (res) {
-                            var contentType = res.headers["Content-Type"];
-                            var blob = new Blob([new Uint8Array(res.body.length).map((_, i) => res.body.charCodeAt(i))]);
-                            const objectUrl = URL.createObjectURL(blob, contentType);
+                    });
+
+                    const fileResponse = await gapi.client.drive.files.get({
+                        'fileId': uploadResponse.result.id,
+                        'alt': 'media'
+                    });
+
+                    var contentType = fileResponse.headers["Content-Type"];
+                    var blob = new Blob([new Uint8Array(fileResponse.body.length).map((_, i) => fileResponse.body.charCodeAt(i))], { type: contentType });
+                    const objectUrl = URL.createObjectURL(blob);
+
+                    function tryToAddResource() {
+                        if (app.loader.loading) {
+                            setTimeout(tryToAddResource, 100);
+                        } else {
                             if (type == "Image" || type == "Animation") {
                                 const texture = PIXI.Texture.from(objectUrl);
-                                while (app.loader.loading) { };
                                 app.loader.add(file.name, objectUrl);
-                                app.loader.resources[file.name] = { "texture": texture, "fileId": response.result.id };
+                                app.loader.resources[file.name] = { "texture": texture, "fileId": uploadResponse.result.id };
                                 app.loader.init = false;
                                 app.loader.load();
-                            }
-                            else if (type == "Sound") {
+                            } else if (type == "Sound") {
                                 app.playList[file.name] = new Howl({
                                     src: [objectUrl],
                                     format: contentType.split("/")[1],
                                     onload: function () {
                                         console.log("Loaded : " + file.name);
-                                        Command.addAssetCmd(file.name, "Sound");
                                     }
                                 });
                             }
-                        });
-                    })
+                        }
+                    }
+                    tryToAddResource();
+                } else {
+                    throw new Error(`No ${type.toLowerCase()} folder found in the specified 'gameId'.`);
                 }
+            } catch (error) {
+                console.error(`Error during ${type.toLowerCase()} file upload for ${file.name}:`, error);
+                // Puedes manejar el error aquí, por ejemplo, agregar la solicitud de carga fallida a una lista de errores
             }
-        })
+        }
+        File.uploading = false;
     }
 
     static uploadScreenShoot(gameId, blob) {

@@ -67,13 +67,16 @@ class CanvasView {
         this.appRenderer = new PIXI.Renderer();
         this.appStage = new PIXI.Container();
 
-        requestAnimationFrame(animate.bind(this));
-        function animate() {
-            requestAnimationFrame(animate.bind(this));
-            this.appRenderer.render(this.appStage);
-        };
-
         this.initApp();
+        this.shouldRender = true;
+        this.animate();
+    }
+
+    animate() {
+        if (this.shouldRender) {
+            this.appRenderer.render(this.appStage);
+        }  
+        requestAnimationFrame(() => this.animate());
     }
 
     takeScreenshot(w, h, sceneID, actorList, upload) {

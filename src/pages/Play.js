@@ -35,7 +35,7 @@ function Play() {
     }, [handleCloseEngine]);
 
     return (
-        <div style={{ position: 'relative', width: '100%', height: 'calc(100vh - 64px - 105.5px)', overflow: 'hidden' }}>
+        <div style={{ position: 'relative', width: '100%', height: 'calc(100vh - 64px - 85.5px)', overflow: 'hidden' }}>
             <IconButton
                 style={{ position: 'absolute', top: '8px', right: '8px', zIndex: 1, color: 'white' }}
                 onClick={handleCloseEngine}
