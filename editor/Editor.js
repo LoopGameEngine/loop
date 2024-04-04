@@ -544,13 +544,8 @@ class Editor {
         this.assetDialog.updateSelectedAsset(assetIDList);
     }
 
-    async uploadFile(file, type) {
-        try {
-            await File.upload(gameID, file, type);
-            return; // Sale si la subida es exitosa
-        } catch (error) {
-            console.log(`Error al subir archivo: ${error}`);
-        }
+    uploadFile(file, type) {
+        File.upload(gameID, file, type);
     }
 
     addAsset(name, type) {

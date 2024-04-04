@@ -1,6 +1,7 @@
 class File {
     static uploadQueue = []; // Cola para almacenar las solicitudes de carga pendientes
     static uploading = false;
+    static folderIdCache = {};
 
     loadJson(gameId, callback) {
         gapi.client.drive.files.list({
@@ -156,93 +157,94 @@ class File {
     }
 
     static async upload(gameId, file, type) {
-        // Agregar la solicitud de carga a la cola
+        
         File.uploadQueue.push({ gameId, file, type });
+        if (File.uploading) return;
 
-        // Si la carga ya está en progreso, salir de la función
-        if (File.uploading) {
-            return;
-        }
-
-        // Iniciar el proceso de carga
         File.uploading = true;
         while (File.uploadQueue.length > 0) {
             const { gameId, file, type } = File.uploadQueue.shift();
             try {
+                const cacheKey = `${gameId}-${type}`;
+                let folderId = File.folderIdCache[cacheKey];
                 const folder = type === "Image" || type === "Animation" ? "images" : type === "Sound" ? "sounds" : "";
 
-                const response = await gapi.client.drive.files.list({
-                    'q': `parents in "${gameId}" and name="${folder}"`
+                if (!folderId) {
+                    const response = await gapi.client.drive.files.list({
+                        'q': `parents in "${gameId}" and name="${folder}"`,
+                        'fields': 'files(id, name)'
+                    });
+
+                    if (response.result.files.length > 0) {
+                        folderId = response.result.files[0].id;
+                        File.folderIdCache[cacheKey] = folderId;
+                    } else {
+                        throw new Error(`No ${type.toLowerCase()} folder found in the specified 'gameId'.`);
+                    }
+                }
+
+                const metadata = {
+                    'name': file.name,
+                    'parents': [folderId]
+                };
+                const boundary = '-------314159265358979323846';
+                const delimiter = "\r\n--" + boundary + "\r\n";
+                const close_delim = "\r\n--" + boundary + "--";
+
+                const readerResult = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = error => reject(error);
+                    reader.readAsBinaryString(file);
                 });
 
-                if (response.result.files.length > 0) {
-                    var metadata = {
-                        'name': file.name,
-                        'parents': [response.result.files[0].id]
-                    };
-                    var boundary = '-------314159265358979323846';
-                    var delimiter = "\r\n--" + boundary + "\r\n";
-                    var close_delim = "\r\n--" + boundary + "--";
+                const contentType = file.type || 'application/octet-stream';
+                const base64Data = btoa(readerResult);
+                const multipartRequestBody = delimiter +
+                    'Content-Type: application/json\r\n\r\n' + JSON.stringify(metadata) +
+                    delimiter + 'Content-Type: ' + contentType + '\r\n' + 'Content-Transfer-Encoding: base64\r\n' +
+                    '\r\n' + base64Data + close_delim;
 
-                    const readerResult = await new Promise((resolve, reject) => {
-                        var reader = new FileReader();
-                        reader.onload = () => resolve(reader.result);
-                        reader.onerror = error => reject(error);
-                        reader.readAsBinaryString(file);
-                    });
+                const uploadResponse = await gapi.client.request({
+                    'path': '/upload/drive/v3/files',
+                    'method': 'POST',
+                    'params': { 'uploadType': 'multipart' },
+                    'headers': { 'Content-Type': `multipart/related; boundary="${boundary}"` },
+                    'body': multipartRequestBody
+                });
 
-                    var contentType = file.type || 'application/octet-stream';
-                    var base64Data = btoa(readerResult);
-                    var multipartRequestBody = delimiter +
-                        'Content-Type: application/json\r\n\r\n' + JSON.stringify(metadata) +
-                        delimiter + 'Content-Type: ' + contentType + '\r\n' + 'Content-Transfer-Encoding: base64\r\n' +
-                        '\r\n' + base64Data + close_delim;
+                const fileResponse = await gapi.client.drive.files.get({
+                    'fileId': uploadResponse.result.id,
+                    'alt': 'media'
+                });
 
-                    const uploadResponse = await gapi.client.request({
-                        'path': '/upload/drive/v3/files',
-                        'method': 'POST',
-                        'params': { 'uploadType': 'multipart' },
-                        'headers': { 'Content-Type': `multipart/related; boundary="${boundary}"` },
-                        'body': multipartRequestBody
-                    });
+                const blob = new Blob([new Uint8Array(fileResponse.body.length).map((_, i) => fileResponse.body.charCodeAt(i))], { type: contentType });
+                const objectUrl = URL.createObjectURL(blob);
 
-                    const fileResponse = await gapi.client.drive.files.get({
-                        'fileId': uploadResponse.result.id,
-                        'alt': 'media'
-                    });
-
-                    var contentType = fileResponse.headers["Content-Type"];
-                    var blob = new Blob([new Uint8Array(fileResponse.body.length).map((_, i) => fileResponse.body.charCodeAt(i))], { type: contentType });
-                    const objectUrl = URL.createObjectURL(blob);
-
-                    function tryToAddResource() {
-                        if (app.loader.loading) {
-                            setTimeout(tryToAddResource, 100);
-                        } else {
-                            if (type == "Image" || type == "Animation") {
-                                const texture = PIXI.Texture.from(objectUrl);
-                                app.loader.add(file.name, objectUrl);
-                                app.loader.resources[file.name] = { "texture": texture, "fileId": uploadResponse.result.id };
-                                app.loader.init = false;
-                                app.loader.load();
-                            } else if (type == "Sound") {
-                                app.playList[file.name] = new Howl({
-                                    src: [objectUrl],
-                                    format: contentType.split("/")[1],
-                                    onload: function () {
-                                        console.log("Loaded : " + file.name);
-                                    }
-                                });
-                            }
+                function tryToAddResource() {
+                    if (app.loader.loading) {
+                        setTimeout(tryToAddResource, 10);
+                    } else {
+                        if (type == "Image" || type == "Animation") {
+                            const texture = PIXI.Texture.from(objectUrl);
+                            app.loader.add(file.name, objectUrl);
+                            app.loader.resources[file.name] = { "texture": texture, "fileId": uploadResponse.result.id };
+                            app.loader.init = false;
+                            app.loader.load();
+                        } else if (type == "Sound") {
+                            app.playList[file.name] = new Howl({
+                                src: [objectUrl],
+                                format: contentType.split("/")[1],
+                                onload: function () {
+                                    console.log("Loaded : " + file.name);
+                                }
+                            });
                         }
                     }
-                    tryToAddResource();
-                } else {
-                    throw new Error(`No ${type.toLowerCase()} folder found in the specified 'gameId'.`);
                 }
+                tryToAddResource();
             } catch (error) {
                 console.error(`Error during ${type.toLowerCase()} file upload for ${file.name}:`, error);
-                // Puedes manejar el error aquí, por ejemplo, agregar la solicitud de carga fallida a una lista de errores
             }
         }
         File.uploading = false;
