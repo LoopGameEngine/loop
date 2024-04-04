@@ -1,18 +1,17 @@
-// HeroSection.js
 import React from 'react';
 import { Box, Typography, Button, useTheme } from '@mui/material';
 import BackgroundImage from '../../images/hero.gif';
 import GameEngineLogo from '../../images/loop.png';
 
-const HeroSection = ({ handleLogin }) => { // Acepta handleLogin como prop
+const HeroSection = ({ handleLogin }) => {
   const theme = useTheme();
   const styles = theme.heroSection;
 
   return (
-    <Box sx={{ ...styles.heroContainer, backgroundImage: `url(${BackgroundImage})` }}>
+    <Box sx={{ ...styles.heroContainer, backgroundImage: `url(${BackgroundImage})`, padding: '20px' }}>
       <Box sx={styles.overlay}></Box>
-      <Box sx={styles.content}>
-        <img src={GameEngineLogo} alt="Game Engine Logo" style={{ ...styles.logo }} />
+      <Box sx={styles.content} style={{ maxWidth: '500px', margin: '0 auto', textAlign: 'center' }}>
+        <img src={GameEngineLogo} alt="Game Engine Logo" style={{ ...styles.logo, maxWidth: '100%', marginBottom: '20px' }} />
         <Typography variant="h2" component="h1" sx={styles.title}>
           Build Your Own 2D Games Easily
         </Typography>
@@ -23,7 +22,8 @@ const HeroSection = ({ handleLogin }) => { // Acepta handleLogin como prop
           variant="contained"
           color="secondary"
           sx={styles.startButton}
-          onClick={handleLogin} // Usa handleLogin aquí en vez de href
+          onClick={handleLogin}
+          style={{ display: 'block', margin: '20px auto' }}
         >
           Start Now
         </Button>
