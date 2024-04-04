@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 
 const GameCard = ({ game, handleEditGame, handlePlayGame, handleDuplicateGame, handleDeleteGame }) => (
-    <Card style={{ maxWidth: '240px', minWidth: '240px' }}>
+    <Card style={{ maxWidth: '240px', minWidth: '240px', userSelect: 'none' }}>
         <CardMedia
             component="img"
             alt={game.name}
