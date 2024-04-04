@@ -8,10 +8,10 @@ const HeroSection = ({ handleLogin }) => {
   const styles = theme.heroSection;
 
   return (
-    <Box sx={{ ...styles.heroContainer, backgroundImage: `url(${BackgroundImage})`, padding: '20px' }}>
+    <Box sx={{ ...styles.heroContainer, backgroundImage: `url(${BackgroundImage})`, padding: '40px' }}>
       <Box sx={styles.overlay}></Box>
-      <Box sx={styles.content} style={{ maxWidth: '500px', margin: '0 auto', textAlign: 'center' }}>
-        <img src={GameEngineLogo} alt="Game Engine Logo" style={{ ...styles.logo, maxWidth: '100%', marginBottom: '20px' }} />
+      <Box sx={styles.content} style={{ maxWidth: '500px', textAlign: 'center' }}>
+        <img src={GameEngineLogo} alt="Game Engine Logo" style={{ ...styles.logo, maxWidth: '100%' }} />
         <Typography variant="h2" component="h1" sx={styles.title}>
           Build Your Own 2D Games Easily
         </Typography>
@@ -23,7 +23,7 @@ const HeroSection = ({ handleLogin }) => {
           color="secondary"
           sx={styles.startButton}
           onClick={handleLogin}
-          style={{ display: 'block', margin: '20px auto' }}
+          style={{ display: 'block', margin: '40px auto auto' }}
         >
           Start Now
         </Button>
