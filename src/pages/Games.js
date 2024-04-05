@@ -1,6 +1,6 @@
 // Games.js
 import React, { useEffect, useState, useCallback } from 'react';
-import { newGame, deleteGame, duplicateGame,listDriveGames } from '../apis/driveAPI';
+import { newGame, deleteGame, duplicateGame, listDriveGames } from '../apis/driveAPI';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -37,7 +37,7 @@ const Games = () => {
       if (action === deleteGame) {
         const confirmed = window.confirm('Are you sure you want to delete this game?');
         if (!confirmed) {
-          return setLoading(false); 
+          return setLoading(false);
         }
       }
       await action(...args);
@@ -70,7 +70,7 @@ const Games = () => {
           <CircularProgress size={80} />
         </Box>
       )}
-      <div style={{ padding: '64px 108px' }}>
+      <div style={{ padding: '64px 96px' }}>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '48px' }}>
           <Button
             variant="contained"
@@ -82,7 +82,13 @@ const Games = () => {
             New Game
           </Button>
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, 240px)', // Tarjetas de 200px de ancho
+          gap: '16px', // Espacio entre tarjetas
+          justifyContent: 'center', // Centra las tarjetas en el contenedor
+          padding: '64px', // Ajusta el padding según sea necesario
+        }}>
           {gameList.map((game) => (
             <GameCard key={game.id} game={game}
               handleEditGame={() => handleNavigation('edit', game.id)}
