@@ -29,20 +29,20 @@ function App() {
       if (token) {
         if (currentTime >= expirationTimestamp) {
           console.log('La sesión ha expirado');
-          setIsSessionTimeOver(true); 
+          setIsSessionTimeOver(true);
           revokeToken(token.access_token);
-          clearInterval(interval); 
+          clearInterval(interval);
         } else {
           const tiempoRestante = expirationTimestamp - currentTime;
           const minutosRestantes = Math.floor(tiempoRestante / 60000);
           const segundosRestantes = ((tiempoRestante % 60000) / 1000).toFixed(0);
           console.log(`${minutosRestantes} minutos y ${segundosRestantes} segundos restantes`);
         }
-      } else {clearInterval(interval);}
+      } else { clearInterval(interval); }
     }, 1000);
-     return () => clearInterval(interval);
+    return () => clearInterval(interval);
   }, [expirationTimestamp, setIsSessionTimeOver, token]); // Incluye token como una dependencia
-  
+
   const revokeToken = async (token) => {
     try {
       await fetch('https://oauth2.googleapis.com/revoke', {
@@ -63,7 +63,7 @@ function App() {
     const newToken = await login();
     setToken(newToken);
     //  const expiresIn = newToken.expires_in;
-    const expiresIn = 20;
+    const expiresIn = 300;
     const expirationTimestamp = new Date().getTime() + expiresIn * 1000;
     setExpirationTimestamp(expirationTimestamp);
     let newAppFolderID = await folderExists("Loop Games", newToken.access_token);
@@ -90,7 +90,6 @@ function App() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       {!isEditorPage && <NavBar handleLogin={handleLogin} handleLogout={handleLogout} />}
-      {/* Envuelve tus rutas en un div que pueda expandirse para empujar el Footer hacia abajo */}
       <div style={{ flex: 1 }}>
         <Routes>
           <Route path="/" element={<LandingPage handleLogin={handleLogin} />} />

@@ -36,7 +36,7 @@ const NavBar = ({ handleLogin, handleLogout }) => {
   };
 
   return (
-    <div>
+    <div style={{ zIndex: 1000 }}>
       <AppBar position="static">
         <Toolbar>
           <Button onClick={onLogoClick} style={{ padding: 0, marginRight: '16px' }}>

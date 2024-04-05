@@ -59,9 +59,9 @@ const Games = () => {
           sx={{
             position: 'fixed',
             width: '100%',
-            height: 'calc(100vh - 64px - 106.5px)',
+            height: '100%',
             backgroundColor: 'rgba(255, 255, 255, 0.5)',
-            zIndex: 9998,
+            zIndex: 999,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
