@@ -1,5 +1,5 @@
 // NavBar.js
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { AppBar, Toolbar, Button, Avatar, Box, Tooltip } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import UserMenu from './UserMenu';
@@ -8,23 +8,9 @@ import { useAppContext } from '../AppContext';
 import loopLogo from '../images/loop.png';
 
 const NavBar = ({ handleLogin, handleLogout }) => {
-  const { userInfo, sessionTime } = useAppContext();
+  const { userInfo } = useAppContext();
   const navigate = useNavigate();
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
-  const [formattedTime, setFormattedTime] = useState('');
-
-  useEffect(() => {
-    const formatTime = (time) => {
-      const minutes = Math.floor(time / 60);
-      const seconds = time % 60;
-      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    };
-    if (sessionTime > 0) {
-      setFormattedTime(formatTime(sessionTime));
-    } else {
-      setFormattedTime('Session has expired');
-    }
-  }, [sessionTime]);
   
   const handleMenuOpen = (event) => {
     setMenuAnchorEl(event.currentTarget);
@@ -59,11 +45,6 @@ const NavBar = ({ handleLogin, handleLogout }) => {
           <Box sx={{ flexGrow: 1 }} />
           {userInfo ? (
             <>
-              {/* Texto del tiempo restante */}
-              <span style={{ marginRight: '10px', color: 'white', alignSelf: 'center', fontFamily: 'sans-serif', fontWeight: 'bold' }}>
-                {formattedTime}
-              </span>
-              {/* Tooltip y Avatar */}
               <Tooltip title={userInfo.name}>
                 <Button color="inherit" onClick={handleMenuOpen}>
                   <Avatar

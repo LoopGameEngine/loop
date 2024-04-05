@@ -84,10 +84,9 @@ const Games = () => {
         </div>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, 240px)', // Tarjetas de 200px de ancho
-          gap: '16px', // Espacio entre tarjetas
-          justifyContent: 'center', // Centra las tarjetas en el contenedor
-          padding: '64px', // Ajusta el padding según sea necesario
+          gridTemplateColumns: 'repeat(auto-fill, 240px)',
+          gap: '24px',
+          justifyContent: 'center',
         }}>
           {gameList.map((game) => (
             <GameCard key={game.id} game={game}
