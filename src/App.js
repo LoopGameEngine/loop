@@ -62,8 +62,8 @@ function App() {
     await initGoogleAPI(CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES);
     const newToken = await login();
     setToken(newToken);
-    //  const expiresIn = newToken.expires_in;
-    const expiresIn = 300;
+    //const expiresIn = newToken.expires_in;
+    const expiresIn = 600;
     const expirationTimestamp = new Date().getTime() + expiresIn * 1000;
     setExpirationTimestamp(expirationTimestamp);
     let newAppFolderID = await folderExists("Loop Games", newToken.access_token);

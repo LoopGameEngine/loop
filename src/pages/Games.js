@@ -10,7 +10,7 @@ import { useAppContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
 
 const Games = () => {
-  const { token, appFolderID, gameList, setGameList, setGameID, updateGameList, setUpdateGameList } = useAppContext();
+  const { appFolderID, gameList, setGameList, setGameID, updateGameList, setUpdateGameList } = useAppContext();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -34,8 +34,8 @@ const Games = () => {
   const handleAction = async (action, ...args) => {
     try {
       setLoading(true);
-      if (action === deleteGame) {
-        const confirmed = window.confirm('Are you sure you want to delete this game?');
+      if (action !== newGame) {
+        const confirmed = window.confirm(`Are you sure you want to ${action.name.replace(/([A-Z])/g, ' $1').trim().toLowerCase()} this game?`);
         if (!confirmed) {
           return setLoading(false);
         }
@@ -44,9 +44,11 @@ const Games = () => {
       setUpdateGameList(true);
     } catch (error) {
       console.error('Error performing game operation:', error.message);
+    } finally {
+      setLoading(false); // Asegurarse de que setLoading se llame incluso si hay un error.
     }
   };
-
+  
   const handleNavigation = (path, gameID) => {
     setGameID(gameID);
     navigate(`/${path}`);
@@ -60,6 +62,8 @@ const Games = () => {
             position: 'fixed',
             width: '100%',
             height: '100%',
+            top:0,
+            bottom:0,
             backgroundColor: 'rgba(255, 255, 255, 0.5)',
             zIndex: 999,
             display: 'flex',
@@ -76,7 +80,7 @@ const Games = () => {
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
-            onClick={() => handleAction(newGame, appFolderID, token.access_token)}
+            onClick={() => handleAction(newGame, appFolderID)}
             disabled={loading}
           >
             New Game
@@ -92,7 +96,7 @@ const Games = () => {
             <GameCard key={game.id} game={game}
               handleEditGame={() => handleNavigation('edit', game.id)}
               handlePlayGame={() => handleNavigation('play', game.id)}
-              handleDuplicateGame={() => handleAction(duplicateGame, game.id)}
+              handleDuplicateGame={() => handleAction(duplicateGame, appFolderID, game.id, game.name)}
               handleDeleteGame={() => handleAction(deleteGame, game.id)}
             />
           ))}

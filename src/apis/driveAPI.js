@@ -21,24 +21,22 @@ export async function folderExists(folderName) {
 export async function createFolder(folderName, parent) {
   try {
     const requestBody = {
-      'name': folderName,
-      'mimeType': 'application/vnd.google-apps.folder',
-      'parents': [parent],
+      name: folderName,
+      mimeType: 'application/vnd.google-apps.folder',
+      parents: [parent],
     };
-    const response = await gapi.client.request({
-      path: '/drive/v3/files',
-      method: 'POST',
-      body: JSON.stringify(requestBody),
+    const response = await gapi.client.drive.files.create({
+      resource: requestBody,
+      fields: 'id',
     });
-    const createdFolderId = response.result?.id;
-    if (createdFolderId) {
-      return createdFolderId;
-    } else {
+    const createdFolderId = response.result.id;
+    if (!createdFolderId) {
       throw new Error('Failed to create folder: No ID returned');
     }
+    return createdFolderId;
   } catch (error) {
-    console.error('Error creating folder:', error.message || error);
-    throw error;
+    console.error(`Error creating folder '${folderName}' with parent '${parent}':`, error.message || error);
+    throw new Error(`Error creating folder '${folderName}': ${error.message || error}`);
   }
 }
 
@@ -72,50 +70,35 @@ export async function listDriveGames(appFolderID) {
 
 export async function newGame(appFolderID) {
   try {
-    const folderId = await createFolder("Untitled Game", appFolderID);
+    const newDirectoryId = await createFolder("Untitled Game", appFolderID);
     await Promise.all([
-      createFolder("images", folderId),
-      createFolder("sounds", folderId),
-      createEmptyJson(folderId),
-      createEmptyImage(folderId)
+      await createFolder("images", newDirectoryId),
+      createFolder("sounds", newDirectoryId),
+      createEmptyJson(newDirectoryId),
+      createEmptyImage(newDirectoryId)
     ]);
-    return { id: folderId, name: "Untitled Game", imageUrl: "" };
+    return { id: newDirectoryId, name: "Untitled Game", imageUrl: "" };
   } catch (error) {
     console.error("Failed to create game:", error);
     throw error;
   }
 }
 
-export async function duplicateGame(gameID) {
-  return new Promise((resolve, reject) => {
-    gapi.client.drive.files.get({
-      'fileId': gameID,
-      'fields': 'name, parents'
-    }).then(response => {
-      console.log('Game Folder Retrieved');
-      const duplicateFolderName = response.result.name + ' - Copy';
-      gapi.client.drive.files.create({
-        'resource': {
-          'name': duplicateFolderName,
-          'mimeType': 'application/vnd.google-apps.folder',
-          'parents': response.result.parents
-        }
-      }).then(res => {
-
-        const newDirectoryId = res.result.id;
-
-        copyDirectoryContents(gameID, newDirectoryId, duplicateFolderName).then(() => {
-          resolve();
-        }).catch(error => {
-          reject(new Error('Error copying directory contents: ' + error.message));
-        });
-      }).catch(error => {
-        reject(new Error('Error creating duplicated game folder: ' + error.message));
-      });
-    }).catch(error => {
-      reject(new Error('Error retrieving game folder: ' + error.message));
-    });
-  });
+export async function duplicateGame(appFolderID, originalGameID, gameName) {
+  try {
+    const newGameName = `${gameName} - Copy`;
+    const newGameID = await createFolder(newGameName, appFolderID);
+    await Promise.all([
+      copyFile(originalGameID, newGameID, 'game.json', newGameName),
+      copyFile(originalGameID, newGameID, 'image.jpg'),
+      duplicateSubdirectory(originalGameID, newGameID, 'images'),
+      duplicateSubdirectory(originalGameID, newGameID, 'sounds'),
+    ]);
+    return { id: newGameID, name: newGameName, imageUrl: "" };
+  } catch (error) {
+    console.error(`Failed to duplicate game '${originalGameID}':`, error);
+    throw error;
+  }
 }
 
 export async function deleteGame(gameID) {
@@ -245,74 +228,54 @@ async function createEmptyImage(gameID) {
   }
 }
 
-async function copyDirectoryContents(sourceDirectoryId, destinationDirectoryId, duplicateFolderName) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const response = await gapi.client.drive.files.list({
-        'q': "'" + sourceDirectoryId + "' in parents",
-        'fields': 'files(id, name, mimeType)'
-      });
-      const files = response.result.files;
-      const copyFilePromises = files.map(async (file) => {
-        if (file.mimeType === 'application/vnd.google-apps.folder') {
-          await duplicateSubdirectory(file.id, destinationDirectoryId);
-        } else {
-          const copyRes = await gapi.client.drive.files.copy({
-            'fileId': file.id,
-            'parents': [destinationDirectoryId]
-          });
-          console.log('File Copied: ' + copyRes.result.name);
-          if (copyRes.result.name === "game.json") {
-            const originalGameJsonId = await getJson(sourceDirectoryId);
-            console.log('ID del archivo game.json:', originalGameJsonId);
-            await changeNameInJson(copyRes.result.id, duplicateFolderName);
-          }
-        }
-      });
-      await Promise.all(copyFilePromises);
-      resolve();
-    } catch (error) {
-      reject(error);
+async function duplicateSubdirectory(originalGameID, newGameID, subdirectoryName) {
+  try {
+    const newSubdirectoryId = await createFolder(subdirectoryName, newGameID);
+    const dirResponse = await gapi.client.drive.files.list({
+      q: `name='${subdirectoryName}' and parents in '${originalGameID}' and mimeType='application/vnd.google-apps.folder' and trashed=false`,
+      fields: 'files(id)',
+    });
+    if (dirResponse.result.files.length === 0) {
+      console.log(`No se encontró el subdirectorio '${subdirectoryName}'.`);
+      return;
     }
-  });
+    const subdirectoryId = dirResponse.result.files[0].id;
+    const filesResponse = await gapi.client.drive.files.list({
+      q: `'${subdirectoryId}' in parents and trashed=false`,
+      fields: 'files(id, name)',
+    });
+    for (const file of filesResponse.result.files) {
+      await gapi.client.drive.files.copy({
+        fileId: file.id,
+        parents: [newSubdirectoryId],
+      });
+      console.log(` ${file.name} copiado .`);
+    }
+    console.log(`Subdirectorio '${subdirectoryName}' duplicado`);
+  } catch (error) {
+    console.error(`Error duplicando el subdirectorio '${subdirectoryName}':`, error);
+    throw error;
+  }
 }
 
-function duplicateSubdirectory(sourceSubdirectoryId, destinationParentId) {
-  var request = gapi.client.drive.files.get({
-    'fileId': sourceSubdirectoryId,
-    'fields': 'name, parents'
-  });
-  request.execute(function (res) {
-    console.log('Subdirectory Retrieved');
-    var subdirectoryData = res;
-    var copyRequest = gapi.client.drive.files.create({
-      'resource': {
-        'name': subdirectoryData.name,
-        'mimeType': 'application/vnd.google-apps.folder',
-        'parents': [destinationParentId]
-      }
+async function copyFile(originalGameID, newGameID, fileName, gameName) {
+  try {
+    const searchResponse = await gapi.client.drive.files.list({
+      q: `name='${fileName}' and '${originalGameID}' in parents and trashed=false`,
+      fields: 'files(id, name)',
+      spaces: 'drive',
     });
-    copyRequest.execute(function (copyRes) {
-      console.log('Subdirectory Duplicated');
-      var duplicatedSubdirectoryId = copyRes.id;
-      copyDirectoryContents(sourceSubdirectoryId, duplicatedSubdirectoryId);
+    const fileId = searchResponse.result.files[0].id;
+    const copyResponse = await gapi.client.drive.files.copy({
+      fileId: fileId,
+      parents: [newGameID],
     });
-  });
-}
-
-function getJson(directoryId) {
-  var request = gapi.client.drive.files.list({
-    'q': "name='game.json' and '" + directoryId + "' in parents",
-    'fields': 'files(id)'
-  });
-  return new Promise(function (resolve, reject) {
-    request.execute(function (res) {
-      if (res.files.length > 0) {
-        var gameJsonId = res.files[0].id;
-        resolve(gameJsonId);
-      } else {
-        reject(new Error('No se encontró el archivo game.json en la carpeta original.'));
-      }
-    });
-  });
+    console.log(`File ${fileName} copied successfully.`);
+    if (fileName === 'game.json') {
+      await changeNameInJson(copyResponse.result.id, `${gameName}`);
+    }
+  } catch (error) {
+    console.error(`Error copying file '${fileName}':`, error);
+    throw error;
+  }
 }
