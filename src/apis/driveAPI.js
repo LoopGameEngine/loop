@@ -84,15 +84,15 @@ export async function createGame(appFolderID) {
   }
 }
 
-export async function duplicateGame(appFolderID, originalGameID, gameName) {
+export async function duplicateGame(handleShowFile, appFolderID, originalGameID, gameName) {
   try {
     const newGameName = `${gameName} - Copy`;
     const newGameID = await createFolder(newGameName, appFolderID);
     await Promise.all([
       copyFile(originalGameID, newGameID, 'game.json', newGameName),
       copyFile(originalGameID, newGameID, 'image.jpg'),
-      duplicateSubdirectory(originalGameID, newGameID, 'images'),
-      duplicateSubdirectory(originalGameID, newGameID, 'sounds'),
+      duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'images',),
+      duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'sounds'),
     ]);
     return { id: newGameID, name: newGameName, imageUrl: "" };
   } catch (error) {
@@ -154,7 +154,7 @@ async function changeNameInJson(fileId, newName) {
       headers: { 'Content-Type': 'application/json' },
       body: updatedJsonString
     });
-    console.log('game.json updated with new name:', newName);
+    // console.log('game.json updated with new name:', newName);
   } catch (error) {
     console.error('Error updating game.json:', error.message);
     throw error;
@@ -228,7 +228,7 @@ async function createEmptyImage(gameID) {
   }
 }
 
-async function duplicateSubdirectory(originalGameID, newGameID, subdirectoryName) {
+async function duplicateSubdirectory(handleShowFile, originalGameID, newGameID, subdirectoryName) {
   try {
     const newSubdirectoryId = await createFolder(subdirectoryName, newGameID);
     const dirResponse = await gapi.client.drive.files.list({
@@ -249,9 +249,10 @@ async function duplicateSubdirectory(originalGameID, newGameID, subdirectoryName
         fileId: file.id,
         parents: [newSubdirectoryId],
       });
-      console.log(` ${file.name} copiado .`);
+      //  console.log(`${file.name} duplicated`);
+      handleShowFile(file.name);
     }
-    console.log(`Subdirectorio '${subdirectoryName}' duplicado`);
+    //console.log(`Subdirectory '${subdirectoryName}' duplicated`);
   } catch (error) {
     console.error(`Error duplicando el subdirectorio '${subdirectoryName}':`, error);
     throw error;
@@ -270,7 +271,7 @@ async function copyFile(originalGameID, newGameID, fileName, gameName) {
       fileId: fileId,
       parents: [newGameID],
     });
-    console.log(`File ${fileName} copied successfully.`);
+    //console.log(`File ${fileName} copied successfully.`);
     if (fileName === 'game.json') {
       await changeNameInJson(copyResponse.result.id, `${gameName}`);
     }

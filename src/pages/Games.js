@@ -3,6 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { createGame, deleteGame, duplicateGame, listDriveGames } from '../apis/driveAPI';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import AddIcon from '@mui/icons-material/Add';
 import GameCard from '../components/GameCard';
@@ -13,9 +14,11 @@ const Games = () => {
   const { appFolderID, gameList, setGameList, setGameID, updateGameList, setUpdateGameList } = useAppContext();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [showFile, setShowFile] = useState('');
 
   const fetchGames = useCallback(async () => {
     try {
+      setLoading(true);
       const newUpdatedGameList = await listDriveGames(appFolderID);
       setGameList(newUpdatedGameList);
       setUpdateGameList(false);
@@ -28,6 +31,10 @@ const Games = () => {
     if (updateGameList) fetchGames();
   }, [updateGameList, fetchGames]);
 
+  const handleShowFile = useCallback((fileName) => {
+    setShowFile(fileName);
+  }, [setShowFile]);
+
   const handleAction = async (action, ...args) => {
     try {
       setLoading(true);
@@ -38,6 +45,7 @@ const Games = () => {
       if (!confirmed) return setLoading(false);
       await action(...args);
       setUpdateGameList(true);
+      setShowFile('');
     } catch (error) { console.error('Error performing game operation:', error.message); }
   };
 
@@ -54,10 +62,16 @@ const Games = () => {
             position: 'fixed', width: '100%', height: '100%',
             top: 0, bottom: 0, zIndex: 999,
             backgroundColor: 'rgba(255, 255, 255, 0.5)',
-            display: 'flex', justifyContent: 'center', alignItems: 'center',
+            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
           }}
         >
           <CircularProgress size={80} />
+          {showFile && (
+            <Typography
+              sx={{ mt: 2, fontSize:'1.25rem' }}>
+              {showFile}
+            </Typography>
+          )}
         </Box>
       )}
       <div style={{ padding: '64px 96px' }}>
@@ -82,7 +96,7 @@ const Games = () => {
             <GameCard key={game.id} game={game}
               handleEditGame={() => handleNavigation('edit', game.id)}
               handlePlayGame={() => handleNavigation('play', game.id)}
-              handleDuplicateGame={() => handleAction(duplicateGame, appFolderID, game.id, game.name)}
+              handleDuplicateGame={() => handleAction(duplicateGame, handleShowFile, appFolderID, game.id, game.name)}
               handleDeleteGame={() => handleAction(deleteGame, game.id, game.name)}
             />
           ))}
