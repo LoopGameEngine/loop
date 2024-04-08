@@ -6,6 +6,8 @@ class Player {
         this.playList = {};
         this.gameId = gameID;
         this.json = {};
+        this.load = new LoadingView("white", "#353535");
+        document.body.appendChild(this.load.html);
         (editor) ? this.onJsonLoaded(JSON.parse(gameData)) :
             this.file.loadJson(this.gameId, this.onJsonLoaded.bind(this));
     }
@@ -22,6 +24,7 @@ class Player {
 
     onSoundsLoaded(playList) {
         this.json.soundList = Object.keys(playList);
+        this.load.closeDialog();
         new Engine(new Game(this.json));
     }
 }

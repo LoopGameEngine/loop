@@ -3,7 +3,7 @@ class LoadingView {
 	constructor(color, backgroundColor) {
 		this.html = document.createElement("div");
 		this.html.className += "dialog-full-screen";
-		this.html.style = "background:" + backgroundColor + "; display: flex; align-items: center; justify-content: center;";
+		this.html.style = "background:" + backgroundColor + "; height: 100vh; display: flex; align-items: center; justify-content: center;";
 		this.html.innerHTML =
 			'<div class="mdc-circular-progress" role="progressbar" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1" style="width:96px; height:96px; left:0; top:0">' +
 			'<div class="mdc-circular-progress__determinate-container">' +

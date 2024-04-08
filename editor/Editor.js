@@ -79,8 +79,8 @@ class Editor {
         gameData = JSON.stringify(gameData, (key, value) => { if (key != "id") return value }, '\t');
         const url = "../engine";
 
-        const width = this.model.displayWidth;
-        const height = this.model.displayHeight;
+        const width = this.model.displayWidth - 13;
+        const height = this.model.displayHeight - 35;
         const left = (window.screen.width - width) / 2;
         const top = (window.screen.height - height) / 2;
 
