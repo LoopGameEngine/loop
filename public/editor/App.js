@@ -5,7 +5,7 @@ class App {
         this.playList = {};
         this.gameId = gameID;
         this.json = {};
-        this.load = new LoadingView("white","var(--mdc-theme-primary)");
+        this.load = new LoadingView("white", "var(--mdc-theme-primary)");
         document.body.appendChild(this.load.html);
         this.file.loadJson(this.gameId, this.onJsonLoaded.bind(this));
     }
@@ -26,9 +26,9 @@ class App {
     }
 
     launchEditor() {
-       var editor = new Editor(new EditorView(), new Game(this.json));
-       new CmdManager(editor);
-       document.body.appendChild(editor.view.html);
-       this.load.closeDialog();
+        var editor = new Editor(new EditorView(), new Game(this.json));
+        new CmdManager(editor);
+        document.body.appendChild(editor.view.html);
+        this.load.closeDialog();
     }
 }

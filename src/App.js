@@ -22,19 +22,15 @@ function App() {
     expirationTimestamp, setExpirationTimestamp, isSessionActive, setIsSessionActive,
     CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES } = useAppContext();
 
+
   useEffect(() => {
     const checkSession = setInterval(() => {
       const currentTime = new Date().getTime();
-      if (currentTime >= expirationTimestamp) {
+      if (expirationTimestamp && currentTime >= expirationTimestamp) {
         console.log('La sesión ha expirado');
         setIsSessionActive(false);
         clearInterval(checkSession);
-      } //else {
-      //   const tiempoRestante = expirationTimestamp - currentTime;
-      //   const minutosRestantes = Math.floor(tiempoRestante / 60000);
-      //   const segundosRestantes = ((tiempoRestante % 60000) / 1000).toFixed(0);
-      //   console.log(`${minutosRestantes} minutos y ${segundosRestantes} segundos restantes`);
-      // }
+      }
     }, 1000);
     return () => clearInterval(checkSession);
   }, [expirationTimestamp, setIsSessionActive]);
@@ -45,7 +41,8 @@ function App() {
     const newToken = await login();
     if (location.pathname === '/') navigate('/games');
     setToken(newToken);
-    const expiresIn = newToken.expires_in - 300;
+    const expiresIn = newToken.expires_in - 300; // five minutes less
+    // const expiresIn = 10;
     const expirationTimestamp = new Date().getTime() + expiresIn * 1000;
     setExpirationTimestamp(expirationTimestamp);
     let newAppFolderID = await folderExists("Loop Games", newToken.access_token);
@@ -57,6 +54,7 @@ function App() {
     setUserInfo(newUserInfo);
     setUpdateGameList(true);
   };
+
 
   const handleLogout = async () => {
     await logout();
@@ -81,50 +79,15 @@ function App() {
               <Route path="/play" element={<Play />} />
             </>
           )}
-          {/* Estas rutas deben ser accesibles sin importar el estado de autenticación */}
           <Route path="/legal" element={<Legal />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           {!token && <Route path="*" element={<Navigate replace to="/" />} />}
         </Routes>
       </div>
-      {!isSessionActive && token && <SessionDialog open={true} onLogin={handleLogin} onLogout={handleLogout} />}
+      {token && <SessionDialog open={!isSessionActive} onLogin={handleLogin} onClose={handleLogout} />}
       {!isEditorPage && <Footer />}
     </div>
   );
 }
 
 export default App;
-
-// useEffect(() => {
-//   const interval = setInterval(() => {
-//     const currentTime = new Date().getTime();
-//     if (token) {
-//       if (currentTime >= expirationTimestamp) {
-//         console.log('La sesión ha expirado');
-//         setIsSessionTimeOver(true);
-//           revokeToken(token.access_token);
-//         clearInterval(interval);
-//       } else {
-//         const tiempoRestante = expirationTimestamp - currentTime;
-//             const minutosRestantes = Math.floor(tiempoRestante / 60000);
-//             const segundosRestantes = ((tiempoRestante % 60000) / 1000).toFixed(0);
-//             console.log(`${minutosRestantes} minutos y ${segundosRestantes} segundos restantes`);
-//       }
-//     } else { clearInterval(interval); }
-//   }, 1000);
-//   return () => clearInterval(interval);
-// }, [expirationTimestamp, setIsSessionTimeOver, token]);
-
-// const revokeToken = async (token) => {
-//   try {
-//     await fetch('https://oauth2.googleapis.com/revoke', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/x-www-form-urlencoded',
-//       },
-//       body: `token=${encodeURIComponent(token)}`,
-//     });
-//   } catch (error) {
-//     console.error('Error al revocar el token', error);
-//   }
-// };

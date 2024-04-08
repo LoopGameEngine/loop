@@ -33,6 +33,7 @@ const theme = createTheme({
       padding: '36px',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
+      backgroundColor: '#2E64EC', 
     },
     overlay: {
       position: 'absolute',

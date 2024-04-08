@@ -2,17 +2,17 @@
 import React from 'react';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 
-const SessionDialog = ({ open, onLogin, onLogout }) => (
-  <Dialog open={open} onClose={onLogout}>
-    <DialogTitle>Session Expired</DialogTitle>
+const SessionDialog = ({ open, onLogin, onClose }) => (
+  <Dialog open={open} onClose={onClose}>
+    <DialogTitle>Your session has expired</DialogTitle>
     <DialogContent>
       <DialogContentText>
-        Your session has expired. Would you like to log in again or log out?
+        Would you like to log in again?
       </DialogContentText>
     </DialogContent>
     <DialogActions>
       <Button onClick={onLogin}>Login</Button>
-      <Button onClick={onLogout}>Logout</Button>
+      <Button onClick={onClose}>Cancel</Button>
     </DialogActions>
   </Dialog>
 );
