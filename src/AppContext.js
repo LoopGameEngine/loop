@@ -11,7 +11,7 @@ export const AppContextProvider = ({ children }) => {
     const [updateGameList, setUpdateGameList] = useState(true);
     const [gameID, setGameID] = useState(null);
     const [expirationTimestamp, setExpirationTimestamp] = useState(null);
-    const [isSessionTimeOver, setIsSessionTimeOver] = useState(false);
+    const [isSessionActive, setIsSessionActive] = useState(false);
     const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
     const API_KEY = process.env.REACT_APP_API_KEY;
     const DISCOVERY_DOCS = process.env.REACT_APP_DISCOVERY_DOCS.split(' ');
@@ -26,7 +26,7 @@ export const AppContextProvider = ({ children }) => {
             updateGameList, setUpdateGameList,
             gameID, setGameID,
             expirationTimestamp, setExpirationTimestamp,
-            isSessionTimeOver, setIsSessionTimeOver,
+            isSessionActive, setIsSessionActive,
             CLIENT_ID,
             API_KEY,
             DISCOVERY_DOCS,

@@ -68,12 +68,12 @@ export async function listDriveGames(appFolderID) {
   }
 }
 
-export async function newGame(appFolderID) {
+export async function createGame(appFolderID) {
   try {
     const newDirectoryId = await createFolder("Untitled Game", appFolderID);
     await Promise.all([
       await createFolder("images", newDirectoryId),
-      createFolder("sounds", newDirectoryId),
+      await createFolder("sounds", newDirectoryId),
       createEmptyJson(newDirectoryId),
       createEmptyImage(newDirectoryId)
     ]);
