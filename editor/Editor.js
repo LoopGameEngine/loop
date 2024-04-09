@@ -556,7 +556,7 @@ class Editor {
     }
 
     deleteFile(assetID, fileName, type) {
-        File.delete(app.loader.resources[fileName].fileId, assetID, fileName, type);
+        File.delete(assetID, fileName, type);
     }
 
     removeAsset(assetID, type) {

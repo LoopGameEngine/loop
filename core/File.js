@@ -96,13 +96,18 @@ class File {
                             app.loader.init = false;
                             app.loader.load();
                         } else if (type == "Sound") {
-                            app.playList[fileName] = new Howl({
-                                src: [objectUrl],
-                                format: contentType.split("/")[1],
-                                onload: function () {
-                                    console.log("Loaded : " + fileName);
-                                }
-                            });
+                            app.playList[fileName] = {
+                                fileId: fileId,
+                                howl: new Howl({
+                                    src: [objectUrl],
+                                    format: contentType.split("/")[1],
+                                    onload: function () {
+                                        console.log("Loaded : " + fileName);
+                                        Command.addAssetCmd(fileName, "Sound");
+                                    }
+                                })
+                            }
+
                         }
                     }
                 }
@@ -192,7 +197,7 @@ class File {
                 callback(playList);
                 return;
             }
-            gapi.client.drive.files.list({ // list the images in the image folder
+            gapi.client.drive.files.list({ // list the sounds in the image folder
                 'q': `parents in "${res.result.files[0].id}"`,
             }).then(function (response) {
                 if (response.result.files.length === 0) {
@@ -208,15 +213,18 @@ class File {
                         var type = res.headers["Content-Type"];
                         var blob = new Blob([new Uint8Array(res.body.length).map((_, i) => res.body.charCodeAt(i))]);
                         var objectUrl = URL.createObjectURL(blob, type);
-                        playList[value.name] = new Howl({
-                            src: [objectUrl],
-                            format: type.split("/")[1],
-                            onload: function () {
-                                counter++;
-                                console.log("Loaded : " + value.name);
-                                if (counter == response.result.files.length) { callback(playList) }
-                            }
-                        });
+                        playList[value.name] = {
+                            fileId: value.id,
+                            howl: new Howl({
+                                src: [objectUrl],
+                                format: type.split("/")[1],
+                                onload: function () {
+                                    counter++;
+                                    console.log("Loaded : " + value.name);
+                                    if (counter == response.result.files.length) { callback(playList) }
+                                }
+                            })
+                        }
                     });
                 });
             })
@@ -256,15 +264,25 @@ class File {
         });
     }
 
-    static delete(fileId, assetID, fileName, type) {
-        if (type == "Image" || type == "Animation") {
-            app.loader.resources[fileName].texture.destroy(true);
-            delete app.loader.resources[fileName];
-            type = "Image";
+    static async delete(assetID, fileName, type) {
+        let fileId;
+        try {
+            if (type == "Image" || type == "Animation") {
+                app.loader.resources[fileName].texture.destroy(true);
+                fileId = app.loader.resources[fileName]?.fileId;
+                delete app.loader.resources[fileName];
+            }
+            else if (type == "Sound") {
+                fileId = app.playList[fileName].fileId;
+                delete app.playList[fileName];
+            }
+            await gapi.client.drive.files.delete({
+                fileId: fileId
+            });
+            Command.removeAssetCmd(assetID, type);
+        } catch (error) {
+            console.error("Error durante la operación de borrado:", error);
         }
-        gapi.client.drive.files.delete({
-            fileId: fileId
-        }).then(() => Command.removeAssetCmd(assetID, type))
     }
 
     static uploadScreenShoot(gameId, blob) {

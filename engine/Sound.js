@@ -1,7 +1,7 @@
 class Sound {
 
     constructor(src, options) {
-        if (src) this.source = player.playList[src];
+        if (src) this.source = player.playList[src].howl;
         if (this.source) {
             this.source.stop(this.id); //  stop to initialize the sound and get a new id when play is performed
             this.id = this.source.play(); // play to get the sound id
