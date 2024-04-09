@@ -69,7 +69,7 @@ function App() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       {!isEditorPage && <NavBar handleLogin={handleLogin} handleLogout={handleLogout} />}
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Routes>
           <Route path="/" element={<LandingPage handleLogin={handleLogin} />} />
           {token && (

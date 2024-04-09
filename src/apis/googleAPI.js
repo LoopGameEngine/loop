@@ -35,7 +35,7 @@ export async function login() {
           resolve(response);
         }
       };
-        tokenClient.requestAccessToken();
+      tokenClient.requestAccessToken();
     });
     return token;
   } catch (error) {
@@ -45,7 +45,7 @@ export async function login() {
 
 export async function logout() {
   try {
-   // google.accounts.id.disableAutoSelect();
+    // google.accounts.id.disableAutoSelect();
   } catch (error) {
     console.error(`Error during logout: ${error.message}`);
   }

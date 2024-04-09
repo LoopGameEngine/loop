@@ -34,10 +34,22 @@ function Play() {
         };
     }, [handleCloseEngine]);
 
+
     return (
-        <div style={{ position: 'relative', width: '100%', height: 'calc(100vh - 64px - 85.5px)', overflow: 'hidden' }}>
+        <div style={{
+            position: 'relative',
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+        }}>
             <IconButton
-                style={{ position: 'absolute', top: '8px', right: '8px', zIndex: 1, color: 'white' }}
+                style={{
+                    position: 'absolute',
+                    top: '8px',
+                    right: '8px',
+                    zIndex: 2,
+                    color: 'white'
+                }}
                 onClick={handleCloseEngine}
             >
                 <CloseIcon />
@@ -46,8 +58,12 @@ function Play() {
                 title="Game Engine"
                 ref={iframeRef}
                 onLoad={handleOpenEngine}
-                src={`/engine/index.html`}
-                style={{ width: '100%', height: '100%', border: 'none' }}
+                src="/engine/index.html"
+                style={{
+                    width: '100%',
+                    flex: 1,
+                    border: 'none',
+                }} 
             ></iframe>
         </div>
     );

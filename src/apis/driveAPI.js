@@ -244,15 +244,16 @@ async function duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 
       q: `'${subdirectoryId}' in parents and trashed=false`,
       fields: 'files(id, name)',
     });
+    const totalFiles = filesResponse.result.files.length;
+    let fileNumber = 0;
     for (const file of filesResponse.result.files) {
       await gapi.client.drive.files.copy({
         fileId: file.id,
         parents: [newSubdirectoryId],
       });
-      //  console.log(`${file.name} duplicated`);
-      handleShowFile(file.name);
+      fileNumber++;
+      handleShowFile(`copying ${subdirectoryName} (${fileNumber}/${totalFiles})`);
     }
-    //console.log(`Subdirectory '${subdirectoryName}' duplicated`);
   } catch (error) {
     console.error(`Error duplicando el subdirectorio '${subdirectoryName}':`, error);
     throw error;

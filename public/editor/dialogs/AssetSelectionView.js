@@ -171,6 +171,8 @@ class AssetSelectionView {
 
 	enableButtons() {
 		var buttons = this.html.querySelectorAll("button");
-		buttons.forEach(i => i.disabled = false); // disable cancel, ok, upload and delete buttons	
+		buttons.forEach(i => {
+			i.disabled = false;
+		}); // disable cancel, ok, upload and delete buttons	
 	}
 }
