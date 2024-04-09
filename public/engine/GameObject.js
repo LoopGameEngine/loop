@@ -42,7 +42,7 @@ class GameObject {
     fixedUpdate(deltaTime) { // logic update
         if (this._spawned) this._spawned = false;
         else if (!this.sleeping) {
-            if (this._rule) try { this._rule.eval(this._engine.scope) } catch (error) { }//console.log(this._name, error) }    // update logic
+            if (this._rule) try { this._rule.eval(this._engine.scope) } catch (error) { console.log(this._name, error) }   // update logic
             if (this.spriteOn) Container.updateScroll(this.scrollX, this.scrollY, this._container.sprite, deltaTime);
             if (this.textOn) Container.updateText(this._container.spriteText, this._engine.scope, this.align, this.width, this.offsetX);
             if (this._dead) this.remove();
