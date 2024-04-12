@@ -13,6 +13,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import Footer from './components/Footer';
 import SessionDialog from './components/SessionDialog';
 import { useAppContext } from './AppContext';
+import PlayTest from './pages/PlayTest'; 
 
 function App() {
   const navigate = useNavigate();
@@ -79,6 +80,7 @@ function App() {
               <Route path="/play" element={<Play />} />
             </>
           )}
+          <Route path="/playtest/:gameId" element={<PlayTest />} />
           <Route path="/legal" element={<Legal />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           {!token && <Route path="*" element={<Navigate replace to="/" />} />}

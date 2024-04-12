@@ -1,15 +1,16 @@
 import React from 'react';
 import { Box, Grid, IconButton, Tooltip, Typography, useTheme } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom'; // Importa Link como RouterLink para evitar conflictos
+import { Link as RouterLink } from 'react-router-dom';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import DiscordIcon from './DiscordIcon'; // Asegúrate de ajustar la ruta de importación según sea necesario
+import DiscordIcon from './DiscordIcon';
 import tikTokImage from '../images/tic-toc.png';
 
 const Footer = () => {
   const theme = useTheme();
   const currentYear = new Date().getFullYear();
+  const gameId = "1Epjm2vuHw3fjpZImuiOTEgmUaB-LZ33-";  // Sustituye esto con el ID real del juego
 
   return (
     <div style={{ zIndex: 1000 }}>
@@ -66,6 +67,11 @@ const Footer = () => {
               <RouterLink to="/privacy-policy" style={{ color: 'inherit', textDecoration: 'none' }}>
                 Privacy Policy
               </RouterLink>
+              |
+              {/* Ajuste del RouterLink para incluir el ID del juego */}
+              <RouterLink to={`/playtest/${encodeURIComponent(gameId)}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                Play Test
+              </RouterLink>
             </Typography>
           </Grid>
         </Grid>
@@ -75,6 +81,7 @@ const Footer = () => {
 };
 
 export default Footer;
+
 
 
 

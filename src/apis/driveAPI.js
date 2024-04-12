@@ -1,6 +1,28 @@
 // /apis/driverAPI.js
 /* global gapi */
 
+export async function listFilesInFolder(folderId) {
+  try {
+      const response = await gapi.client.drive.files.list({
+          q: `'${folderId}' in parents and trashed=false`,
+          fields: 'nextPageToken, files(id, name, webViewLink)'
+      });
+      console.log(response);
+      if (response.result.files && response.result.files.length > 0) {
+          return { files: response.result.files };
+      } else {
+          console.log('No files found in the folder.');
+          return { files: [] };
+      }
+  } catch (error) {
+      console.error('Error fetching files:', error.message);
+      throw error;
+  }
+}
+
+
+
+
 export async function folderExists(folderName) {
   try {
     const response = await gapi.client.drive.files.list({
@@ -87,19 +109,80 @@ export async function createGame(appFolderID) {
 export async function duplicateGame(handleShowFile, appFolderID, originalGameID, gameName) {
   try {
     const newGameName = `${gameName} - Copy`;
-    const newGameID = await createFolder(newGameName, appFolderID);
+    const newGameID = await createFolder(newGameName, appFolderID);  // Crear la carpeta del nuevo juego
     await Promise.all([
       copyFile(originalGameID, newGameID, 'game.json', newGameName),
       copyFile(originalGameID, newGameID, 'image.jpg'),
-      duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'images',),
+      duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'images'),
       duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'sounds'),
     ]);
-    return { id: newGameID, name: newGameName, imageUrl: "" };
+
+    // Compartir la carpeta del juego duplicado con el usuario específico
+    await shareFolderWithUser(newGameID, 'loopgameengine@gmail.com', 'reader');
+    
+    console.log("Game duplicated and shared successfully. Game ID: ", newGameID);  // Imprimir el ID en la consola
+
+    return { id: newGameID, name: newGameName };  // Devuelve el ID y nombre del nuevo juego
   } catch (error) {
     console.error(`Failed to duplicate game '${originalGameID}':`, error);
     throw error;
   }
 }
+
+
+async function shareFolderWithUser(folderId, userEmail, role) {
+  var body = {
+    'type': 'user',
+    'role': role,  // 'reader' para solo lectura
+    'emailAddress': userEmail
+  };
+  try {
+    const permissionResponse = await gapi.client.drive.permissions.create({
+      'fileId': folderId,
+      'resource': body
+    });
+    if (permissionResponse.status !== 200) {
+      console.error('Error sharing folder:', permissionResponse);
+      return;
+    }
+    console.log("Shared successfully with:", userEmail);
+
+    // Obtener el enlace de compartir
+    const linkResponse = await gapi.client.drive.files.get({
+      fileId: folderId,
+      fields: 'webViewLink'
+    });
+    if (linkResponse.status === 200) {
+      console.log("Link to shared game:", linkResponse.result.webViewLink);
+      return linkResponse.result.webViewLink;  // Devuelve el enlace para su uso
+    } else {
+      console.error('Error getting share link:', linkResponse);
+      return null;  // Devuelve null si hay un error
+    }
+  } catch (error) {
+    console.error('Error sharing folder and getting link:', error);
+    return null;  // Devuelve null en caso de error
+  }
+}
+
+
+
+// export async function duplicateGame(handleShowFile, appFolderID, originalGameID, gameName) {
+//   try {
+//     const newGameName = `${gameName} - Copy`;
+//     const newGameID = await createFolder(newGameName, appFolderID);
+//     await Promise.all([
+//       copyFile(originalGameID, newGameID, 'game.json', newGameName),
+//       copyFile(originalGameID, newGameID, 'image.jpg'),
+//       duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'images',),
+//       duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'sounds'),
+//     ]);
+//     return { id: newGameID, name: newGameName, imageUrl: "" };
+//   } catch (error) {
+//     console.error(`Failed to duplicate game '${originalGameID}':`, error);
+//     throw error;
+//   }
+// }
 
 export async function deleteGame(gameID) {
   try {
@@ -272,7 +355,7 @@ async function copyFile(originalGameID, newGameID, fileName, gameName) {
       fileId: fileId,
       parents: [newGameID],
     });
-    //console.log(`File ${fileName} copied successfully.`);
+    console.log(`File ${fileName} copied successfully.`);
     if (fileName === 'game.json') {
       await changeNameInJson(copyResponse.result.id, `${gameName}`);
     }
