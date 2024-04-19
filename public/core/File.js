@@ -120,29 +120,43 @@ class File {
     }
 
     loadJson(gameId, callback) {
+        console.log("load json gameID: ", gameId);
         gapi.client.drive.files.list({
-            'q': `parents in "${gameId}" and name="game.json" and trashed=false`
+            'q': `"${gameId}" in parents and name="game.json" and trashed=false`
         }).then(function (res) {
-            if (res.result.files.length > 0) {
+            console.log("json ID: ", res.result.files[0].id);
+            if (res.result.files && res.result.files.length > 0) {
+                console.log("dentro");
                 gapi.client.drive.files.get({
                     fileId: res.result.files[0].id,
                     alt: 'media'
                 }).then(function (res) {
+                    console.log("get", res.body);
                     var json;
-                    (res.body === "") ? json = {} : json = JSON.parse(res.body);
+                    try {
+                        json = JSON.parse(res.body || "{}");
+                    } catch (e) {
+                        console.error("Error parsing game.json:", e);
+                        callback({}); // Pasar un objeto vacío o manejar de otra forma
+                        return;
+                    }
                     callback(json);
                 }).catch(function (error) {
                     console.error("Error fetching game.json file:", error);
                 });
             } else {
                 console.log("game.json file not found in the specified folder.");
+                callback({}); // Pasar un objeto vacío o manejar de otra forma
             }
         }).catch(function (error) {
             console.error("Error listing files:", error);
+            callback({}); // Pasar un objeto vacío o manejar de otra forma
         });
     }
 
+
     loadImages(gameId, loader, callback) {
+        console.log("images", gameId);
         loader.init = true;
         loader.onLoad.add((loader, resource) => {
             console.log("Loaded :", resource.name);
@@ -150,16 +164,18 @@ class File {
         });
         var counter = 0;
         gapi.client.drive.files.list({ // find the images folder in the game folder
-            'q': `parents in "${gameId}" and name="images" and mimeType = "application/vnd.google-apps.folder"`
+            'q': `"${gameId}" in parents and name="images" and mimeType = "application/vnd.google-apps.folder"`
         }).then(function (res) {
+            console.log(res.result.files);
             if (res.result.files.length === 0) {
                 console.log("No images folder found");
                 callback(loader);
                 return;
             }
             gapi.client.drive.files.list({ // list the images in the image folder
-                'q': `parents in "${res.result.files[0].id}"`,
+                'q': `"${res.result.files[0].id} in parents"`,
             }).then(function (response) {
+                console.log(response.result.files)
                 if (response.result.files.length === 0) {
                     console.log("No images found in the images folder");
                     callback(loader);

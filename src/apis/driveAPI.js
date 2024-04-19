@@ -1,24 +1,24 @@
 // /apis/driverAPI.js
 /* global gapi */
 
-export async function listFilesInFolder(folderId) {
-  try {
-      const response = await gapi.client.drive.files.list({
-          q: `'${folderId}' in parents and trashed=false`,
-          fields: 'nextPageToken, files(id, name, webViewLink)'
-      });
-      console.log(response);
-      if (response.result.files && response.result.files.length > 0) {
-          return { files: response.result.files };
-      } else {
-          console.log('No files found in the folder.');
-          return { files: [] };
-      }
-  } catch (error) {
-      console.error('Error fetching files:', error.message);
-      throw error;
-  }
-}
+// export async function listFilesInFolder(folderId) {
+//   try {
+//       const response = await gapi.client.drive.files.list({
+//           q: `'${folderId}' in parents and trashed=false`,
+//           fields: 'nextPageToken, files(id, name, webViewLink)'
+//       });
+//       console.log(response);
+//       if (response.result.files && response.result.files.length > 0) {
+//           return { files: response.result.files };
+//       } else {
+//           console.log('No files found in the folder.');
+//           return { files: [] };
+//       }
+//   } catch (error) {
+//       console.error('Error fetching files:', error.message);
+//       throw error;
+//   }
+// }
 
 
 

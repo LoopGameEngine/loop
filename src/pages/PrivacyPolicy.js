@@ -23,14 +23,13 @@ function PrivacyPolicy() {
         <Typography variant="body1" paragraph>
           Additionally, we use the Google Drive API to create and manage a directory named "Loop Games" in the root of your Google Drive. This directory is where the games you create and edit within Loop Game Engine are stored. We do not access, view, or store any other data from your Google Drive.
         </Typography>
-        <Typography variant="body1" paragraph>
-          <strong>2. How We Use Your Information</strong><br />
-          The information we access is used to:
-          <ul>
-            <li>Verify your identity upon login.</li>
-            <li>Facilitate the creation and management of the "Loop Games" directory in your Google Drive.</li>
-          </ul>
+        <Typography variant="body1">
+          <strong>2. How We Use Your Information</strong>
         </Typography>
+        <ul>
+          <li>Verify your identity upon login.</li>
+          <li>Facilitate the creation and management of the "Loop Games" directory in your Google Drive.</li>
+        </ul>
         <Typography variant="body1" paragraph>
           <strong>3. Security of Your Information</strong><br />
           Your information's security is a priority for us. We do not share your information with third parties, and we do not use local storage or cookies to maintain access tokens or other sensitive information. Access tokens are handled in memory and securely passed within our application.

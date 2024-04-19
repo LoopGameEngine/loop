@@ -1,50 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useRef, useCallback } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'; // Importa useParams
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { useAppContext } from '../AppContext';
-import { listFilesInFolder } from '../apis/driveAPI';
 
-const PlayTest = () => {
-    const { gameId } = useParams();  // Cambiado para recibir gameId
-    const { userInfo, token } = useAppContext();
-    const [files, setFiles] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+function PlayTest() {
+    const { API_KEY, DISCOVERY_DOCS } = useAppContext();
+    const navigate = useNavigate();
+    const iframeRef = useRef(null);
+
+    // Utiliza useParams para obtener gameID de la URL
+    const { gameId } = useParams(); // Asegúrate de que la ruta está definida para recibir gameId
+
+    const handleCloseEngine = useCallback(() => {
+        navigate('/games');
+    }, [navigate]);
+
+    const handleOpenEngine = useCallback(() => {
+        const messageData = {
+            type: 'playGame',
+            data: { gameID: gameId, API_KEY, DISCOVERY_DOCS } // Envía gameId obtenido de la URL
+        };
+        iframeRef.current.contentWindow.postMessage(messageData, '*');
+    }, [gameId, API_KEY, DISCOVERY_DOCS]); // Añade gameId a las dependencias
 
     useEffect(() => {
-        console.log("Token:", token);
-        console.log("Game ID:", gameId);
-    
-        if (token && gameId) {
-            listFilesInFolder(gameId)
-                .then(result => {
-                    setFiles(result.files);
-                    setLoading(false);
-                })
-                .catch(err => {
-                    console.error('Error fetching files:', err);
-                    setError(err.message);
-                    setLoading(false);
-                });
-        } else {
-            setError('Token or Game ID is missing');
-            setLoading(false);
-        }
-    }, [token, gameId]);  // Asegúrate de que gameId es la variable correcta usada
-    
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === "closeGame") {
+                handleCloseEngine();
+            }
+        });
+
+        return () => {
+            window.removeEventListener('message', handleCloseEngine);
+        };
+    }, [handleCloseEngine]);
 
     return (
-        <div>
-            <h1>PlayTest Page</h1>
-            <p>User Info: {JSON.stringify(userInfo)}</p>
-            <ul>
-                {files.map(file => (
-                    <li key={file.id}>{file.name}</li>
-                ))}
-            </ul>
+        <div style={{
+            position: 'relative',
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+        }}>
+            <IconButton
+                style={{
+                    position: 'absolute',
+                    top: '8px',
+                    right: '8px',
+                    zIndex: 2,
+                    color: 'white'
+                }}
+                onClick={handleCloseEngine}
+            >
+                <CloseIcon />
+            </IconButton>
+            <iframe
+                title="Game Engine"
+                ref={iframeRef}
+                onLoad={handleOpenEngine}
+                src="/engine/index.html"
+                style={{
+                    width: '100%',
+                    height: '100%', // Asegurarse de que el iframe ocupe todo el espacio disponible
+                    border: 'none',
+                }} 
+            ></iframe>
         </div>
     );
-};
+}
 
 export default PlayTest;

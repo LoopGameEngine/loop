@@ -84,6 +84,20 @@
 		let gameID, token, API_KEY, DISCOVERY_DOCS, gameData, player;
 		var editor = false;
 
+		// window.addEventListener('message', (event) => {
+		// 	if (event.origin !== window.location.origin) return;
+		// 	const message = event.data;
+		// 	if (message.type === 'playGame' && message.data) {
+		// 		gameID = message.data.gameID;
+		// 		token = message.data.token;
+		// 		API_KEY = message.data.API_KEY;
+		// 		DISCOVERY_DOCS = message.data.DISCOVERY_DOCS;
+		// 		gameData = message.data.gameData;
+		// 		if (gameData) editor = true;
+		// 		gapiLoaded();
+		// 	}
+		// });
+
 		window.addEventListener('message', (event) => {
 			if (event.origin !== window.location.origin) return;
 			const message = event.data;
@@ -92,20 +106,25 @@
 				token = message.data.token;
 				API_KEY = message.data.API_KEY;
 				DISCOVERY_DOCS = message.data.DISCOVERY_DOCS;
-				gameData = message.data.gameData;
-				if (gameData) editor = true;
-				gapiLoaded();
+				gapiLoading();
 			}
 		});
 
-		function gapiLoaded() {
+		function gapiLoading() {
 			gapi.load('client', () => {
 				gapi.client.init({
 					apiKey: API_KEY,
 					discoveryDocs: DISCOVERY_DOCS,
 				}).then(() => {
-					gapi.client.setToken(token);
+					console.log("GAPI client initialized successfully.");
+					console.log(gameID, token, API_KEY, DISCOVERY_DOCS)
+					if (token ){
+						console.log("set token");
+						gapi.client.setToken(token);
+					} 
 					player = new Player(gameID);
+				}).catch(error => {
+					console.error("Failed to initialize GAPI client", error);
 				});
 			});
 		}
