@@ -62,7 +62,7 @@ function PlayTest() {
                 src="/engine/index.html"
                 style={{
                     width: '100%',
-                    height: '100%', // Asegurarse de que el iframe ocupe todo el espacio disponible
+                    flex: 1,
                     border: 'none',
                 }} 
             ></iframe>
