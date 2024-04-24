@@ -6,7 +6,7 @@ const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
     const [token, setToken] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
-    const [appFolderID, setAppFolderID] = useState(null);
+    const [loopFolderID, setLoopFolderID] = useState(null);
     const [gameList, setGameList] = useState([]);
     const [updateGameList, setUpdateGameList] = useState(true);
     const [gameID, setGameID] = useState(null);
@@ -21,7 +21,7 @@ export const AppContextProvider = ({ children }) => {
         <AppContext.Provider value={{
             token, setToken,
             userInfo, setUserInfo,
-            appFolderID, setAppFolderID,
+            loopFolderID, setLoopFolderID,
             gameList, setGameList,
             updateGameList, setUpdateGameList,
             gameID, setGameID,

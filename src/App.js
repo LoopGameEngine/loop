@@ -13,13 +13,12 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import Footer from './components/Footer';
 import SessionDialog from './components/SessionDialog';
 import { useAppContext } from './AppContext';
-import PlayTest from './pages/PlayTest'; 
 
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const isEditorPage = location.pathname.includes('/edit');
-  const { token, setToken, setUserInfo, setAppFolderID, setGameList, setUpdateGameList,
+  const { setToken, setUserInfo, setLoopFolderID, setGameList, setUpdateGameList,
     expirationTimestamp, setExpirationTimestamp, isSessionActive, setIsSessionActive,
     CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES } = useAppContext();
 
@@ -46,22 +45,21 @@ function App() {
     // const expiresIn = 10;
     const expirationTimestamp = new Date().getTime() + expiresIn * 1000;
     setExpirationTimestamp(expirationTimestamp);
-    let newAppFolderID = await folderExists("Loop Games", newToken.access_token);
-    if (!newAppFolderID) {
-      newAppFolderID = await createFolder("Loop Games", 'root', newToken.access_token);
+    let newFolderID = await folderExists("Loop");
+    if (!newFolderID) {
+      newFolderID = await createFolder("Loop", 'root');
     }
-    setAppFolderID(newAppFolderID);
+    setLoopFolderID(newFolderID);
     const newUserInfo = await getUserInfo(newToken.access_token);
     setUserInfo(newUserInfo);
     setUpdateGameList(true);
   };
 
-
   const handleLogout = async () => {
     await logout();
     setToken(null);
     setUserInfo(null);
-    setAppFolderID(null);
+    setLoopFolderID(null);
     setGameList([]);
     setIsSessionActive(false);
     navigate('/');
@@ -73,20 +71,20 @@ function App() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Routes>
           <Route path="/" element={<LandingPage handleLogin={handleLogin} />} />
-          {token && (
+          {isSessionActive && (
             <>
               <Route path="/games" element={<Games />} />
               <Route path="/edit" element={<Edit />} />
               <Route path="/play" element={<Play />} />
             </>
           )}
-          <Route path="/playtest/:gameId" element={<PlayTest />} />
+          <Route path="/play/:gameId" element={<Play />} />
           <Route path="/legal" element={<Legal />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          {!token && <Route path="*" element={<Navigate replace to="/" />} />}
+          {!isSessionActive && <Route path="*" element={<Navigate replace to="/" />} />}
         </Routes>
       </div>
-      {token && <SessionDialog open={!isSessionActive} onLogin={handleLogin} onClose={handleLogout} />}
+      {isSessionActive && <SessionDialog open={!isSessionActive} onLogin={handleLogin} onClose={handleLogout} />}
       {!isEditorPage && <Footer />}
     </div>
   );

@@ -11,7 +11,7 @@ const NavBar = ({ handleLogin, handleLogout }) => {
   const { userInfo } = useAppContext();
   const navigate = useNavigate();
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
-  
+
   const handleMenuOpen = (event) => {
     setMenuAnchorEl(event.currentTarget);
   };

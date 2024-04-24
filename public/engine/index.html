@@ -116,10 +116,8 @@
 					apiKey: API_KEY,
 					discoveryDocs: DISCOVERY_DOCS,
 				}).then(() => {
-					console.log("GAPI client initialized successfully.");
 					console.log(gameID, token, API_KEY, DISCOVERY_DOCS)
 					if (token ){
-						console.log("set token");
 						gapi.client.setToken(token);
 					} 
 					player = new Player(gameID);

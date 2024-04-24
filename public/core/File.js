@@ -6,23 +6,20 @@ class File {
     static folderIdCache = {};
 
     loadJson(gameId, callback) {
-        console.log("load json gameID: ", gameId);
         gapi.client.drive.files.list({
             'q': `"${gameId}" in parents and name="game.json" and trashed=false`
         }).then(function (res) {
-            console.log("json ID: ", res.result.files[0].id);
             if (res.result.files && res.result.files.length > 0) {
                 gapi.client.drive.files.get({
                     fileId: res.result.files[0].id,
                     alt: 'media'
                 }).then(function (res) {
-                    console.log("get", res.body);
                     var json;
                     try {
                         json = JSON.parse(res.body || "{}");
                     } catch (e) {
                         console.error("Error parsing game.json:", e);
-                        callback({}); // Pasar un objeto vacío o manejar de otra forma
+                        callback({}); 
                         return;
                     }
                     callback(json);
@@ -31,11 +28,11 @@ class File {
                 });
             } else {
                 console.log("game.json file not found in the specified folder.");
-                callback({}); // Pasar un objeto vacío o manejar de otra forma
+                callback({}); 
             }
         }).catch(function (error) {
             console.error("Error listing files:", error);
-            callback({}); // Pasar un objeto vacío o manejar de otra forma
+            callback({}); 
         });
     }
 

@@ -45,7 +45,7 @@ export async function login() {
 
 export async function logout() {
   try {
-    // google.accounts.id.disableAutoSelect();
+    google.accounts.id.disableAutoSelect();
   } catch (error) {
     console.error(`Error during logout: ${error.message}`);
   }

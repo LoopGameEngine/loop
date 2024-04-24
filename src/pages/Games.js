@@ -1,6 +1,6 @@
 // Games.js
 import React, { useEffect, useState, useCallback } from 'react';
-import { createGame, deleteGame, duplicateGame, listDriveGames } from '../apis/driveAPI';
+import { listDriveGames, createGame, duplicateGame, deleteGame, shareGame, unshareGame} from '../apis/driveAPI';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Typography } from '@mui/material';
@@ -11,7 +11,7 @@ import { useAppContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
 
 const Games = () => {
-  const { appFolderID, gameList, setGameList, setGameID, updateGameList, setUpdateGameList } = useAppContext();
+  const { loopFolderID, gameList, setGameList, setGameID, updateGameList, setUpdateGameList } = useAppContext();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [showFile, setShowFile] = useState('');
@@ -19,13 +19,13 @@ const Games = () => {
   const fetchGames = useCallback(async () => {
     try {
       setLoading(true);
-      const newUpdatedGameList = await listDriveGames(appFolderID);
+      const newUpdatedGameList = await listDriveGames(loopFolderID);
       setGameList(newUpdatedGameList);
       setUpdateGameList(false);
     } catch (error) {
       console.error('Error fetching games:', error);
     } finally { setLoading(false) }
-  }, [appFolderID, setGameList, setUpdateGameList]);
+  }, [loopFolderID, setGameList, setUpdateGameList]);
 
   useEffect(() => {
     if (updateGameList) fetchGames();
@@ -68,7 +68,7 @@ const Games = () => {
           <CircularProgress size={80} />
           {showFile && (
             <Typography
-              sx={{ mt: 2, fontSize:'1.25rem' }}>
+              sx={{ mt: 2, fontSize: '1.25rem' }}>
               {showFile}
             </Typography>
           )}
@@ -80,7 +80,7 @@ const Games = () => {
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
-            onClick={() => handleAction(createGame, appFolderID, "a new game")}
+            onClick={() => handleAction(createGame, loopFolderID, "a new game")}
             disabled={loading}
           >
             New Game
@@ -96,8 +96,10 @@ const Games = () => {
             <GameCard key={game.id} game={game}
               handleEditGame={() => handleNavigation('edit', game.id)}
               handlePlayGame={() => handleNavigation('play', game.id)}
-              handleDuplicateGame={() => handleAction(duplicateGame, handleShowFile, appFolderID, game.id, game.name)}
+              handleDuplicateGame={() => handleAction(duplicateGame, handleShowFile, loopFolderID, game.id, game.name)}
               handleDeleteGame={() => handleAction(deleteGame, game.id, game.name)}
+              handleShareGame={() => handleAction(shareGame, game.id, game.name)}
+              handleUnshareGame={() => handleAction(unshareGame, game.id, game.name)}
             />
           ))}
         </div>

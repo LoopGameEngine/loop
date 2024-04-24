@@ -1,12 +1,16 @@
-// Play.js
+// play.js
 import React, { useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppContext } from '../AppContext';
 
 function Play() {
-    const { gameID, token, API_KEY, DISCOVERY_DOCS } = useAppContext();
+    const { gameID: urlGameID } = useParams();
+    const { gameID: contextGameID, token, API_KEY, DISCOVERY_DOCS } = useAppContext();
+
+    const gameID = urlGameID || contextGameID;
+
     const navigate = useNavigate();
     const iframeRef = useRef(null);
 
@@ -15,25 +19,28 @@ function Play() {
     }, [navigate]);
 
     const handleOpenEngine = useCallback(() => {
-        const messageData = {
-            type: 'playGame',
-            data: { gameID, token, API_KEY, DISCOVERY_DOCS }
-        };
-        iframeRef.current.contentWindow.postMessage(messageData, '*');
+        if (iframeRef.current) {
+            const messageData = {
+                type: 'playGame',
+                data: { gameID, token, API_KEY, DISCOVERY_DOCS }
+            };
+            iframeRef.current.contentWindow.postMessage(messageData, '*');
+        }
     }, [gameID, token, API_KEY, DISCOVERY_DOCS]);
 
     useEffect(() => {
-        window.addEventListener('message', (event) => {
+        const messageHandler = (event) => {
             if (event.data && event.data.type === "closeGame") {
                 handleCloseEngine();
             }
-        });
+        };
+
+        window.addEventListener('message', messageHandler);
 
         return () => {
-            window.removeEventListener('message', handleCloseEngine);
+            window.removeEventListener('message', messageHandler);
         };
     }, [handleCloseEngine]);
-
 
     return (
         <div style={{
@@ -63,7 +70,7 @@ function Play() {
                     width: '100%',
                     flex: 1,
                     border: 'none',
-                }} 
+                }}
             ></iframe>
         </div>
     );

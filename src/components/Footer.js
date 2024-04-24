@@ -69,7 +69,7 @@ const Footer = () => {
               </RouterLink>
               |
               {/* Ajuste del RouterLink para incluir el ID del juego */}
-              <RouterLink to={`/playtest/${gameId}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+              <RouterLink to={`/play/${gameId}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                 Play Test
               </RouterLink>
             </Typography>
