@@ -60,15 +60,24 @@ export async function listDriveGames(folderID) {
     });
     const gameFiles = response.result.files;
     if (gameFiles && gameFiles.length > 0) {
-      const imagePromises = gameFiles.map(async (file) => {
+      const imageAndPermissionPromises = gameFiles.map(async (file) => {
         try {
+          // Obtener la URL de la imagen
           file.imageUrl = await getImageDownloadUrl(file.id);
+
+          // Obtener permisos del archivo
+          const permissionsResponse = await gapi.client.drive.permissions.list({
+            fileId: file.id,
+            fields: 'permissions(id, type, role)'
+          });
+          file.isShared = permissionsResponse.result.permissions.some(perm => perm.type === 'anyone' && perm.role === 'reader');
         } catch (imageError) {
-          console.error(`Error obtaining image for file ${file.id}: ${imageError}`);
+          console.error(`Error obtaining data for file ${file.id}: ${imageError}`);
           file.imageUrl = ''; // Proporcionar una URL de imagen predeterminada o dejar vacío
+          file.isShared = false; // Asumir no compartido si hay un error
         }
       });
-      await Promise.all(imagePromises);
+      await Promise.all(imageAndPermissionPromises);
       files.push(...gameFiles);
     }
     return files;
@@ -77,6 +86,7 @@ export async function listDriveGames(folderID) {
     throw error;
   }
 }
+
 
 export async function createGame(appFolderID) {
   try {
