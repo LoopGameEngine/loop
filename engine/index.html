@@ -84,20 +84,6 @@
 		let gameID, token, API_KEY, DISCOVERY_DOCS, gameData, player;
 		var editor = false;
 
-		// window.addEventListener('message', (event) => {
-		// 	if (event.origin !== window.location.origin) return;
-		// 	const message = event.data;
-		// 	if (message.type === 'playGame' && message.data) {
-		// 		gameID = message.data.gameID;
-		// 		token = message.data.token;
-		// 		API_KEY = message.data.API_KEY;
-		// 		DISCOVERY_DOCS = message.data.DISCOVERY_DOCS;
-		// 		gameData = message.data.gameData;
-		// 		if (gameData) editor = true;
-		// 		gapiLoaded();
-		// 	}
-		// });
-
 		window.addEventListener('message', (event) => {
 			if (event.origin !== window.location.origin) return;
 			const message = event.data;
@@ -116,10 +102,9 @@
 					apiKey: API_KEY,
 					discoveryDocs: DISCOVERY_DOCS,
 				}).then(() => {
-					console.log(gameID, token, API_KEY, DISCOVERY_DOCS)
-					if (token ){
+					if (token) {
 						gapi.client.setToken(token);
-					} 
+					}
 					player = new Player(gameID);
 				}).catch(error => {
 					console.error("Failed to initialize GAPI client", error);
