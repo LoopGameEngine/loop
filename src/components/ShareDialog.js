@@ -47,12 +47,12 @@ const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleU
           fullWidth
           margin="dense"
           label="Link to Play the Game"
-          value={isShared ? `${server}/play/${gameID}` : ''}
+          value={isShared ? `${server}/#/play/${gameID}` : ''}
           disabled={!isShared}
           InputProps={{
             readOnly: true,
             endAdornment: (
-              <IconButton onClick={() => handleCopy(`${server}/play/${gameID}`)} disabled={!isShared}>
+              <IconButton onClick={() => handleCopy(`${server}/#/play/${gameID}`)} disabled={!isShared}>
                 <ContentCopyIcon />
               </IconButton>
             )
@@ -62,12 +62,12 @@ const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleU
           fullWidth
           margin="dense"
           label="Link to Copy the Game"
-          value={isShared ? `${server}/copy/${gameID}` : ''}
+          value={isShared ? `${server}/#/copy/${gameID}` : ''}
           disabled={!isShared}
           InputProps={{
             readOnly: true,
             endAdornment: (
-              <IconButton onClick={() => handleCopy(`${server}/copy/${gameID}`)} disabled={!isShared}>
+              <IconButton onClick={() => handleCopy(`${server}/#/copy/${gameID}`)} disabled={!isShared}>
                 <ContentCopyIcon />
               </IconButton>
             )

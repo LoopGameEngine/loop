@@ -41,6 +41,7 @@ function App() {
     await initGoogleAPI(CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES);
     const newToken = await login();
     if (!isSessionActive) {
+      console.log(pathname);
       if (pathname.match(/^\/play\/.+$/)) {
         const gameId = pathname.split('/').pop();
         setGameID(gameId);
