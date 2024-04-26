@@ -27,7 +27,7 @@ class File {
                     console.error("Error fetching game.json file:", error);
                 });
             } else {
-                console.log("game.json file not found in the specified folder.");
+                console.error("game.json file not found in the specified folder.");
                 callback({}); 
             }
         }).catch(function (error) {
@@ -37,7 +37,6 @@ class File {
     }
 
     loadImages(gameId, loader, callback) {
-        console.log("images", gameId);
         loader.init = true;
         loader.onLoad.add((loader, resource) => {
             console.log("Loaded :", resource.name);
@@ -47,16 +46,14 @@ class File {
         gapi.client.drive.files.list({ // find the images folder in the game folder
             'q': `"${gameId}" in parents and name="images" and mimeType = "application/vnd.google-apps.folder"`
         }).then(function (res) {
-            console.log(res.result.files);
             if (res.result.files.length === 0) {
-                console.log("No images folder found");
+                console.error("No images folder found");
                 callback(loader);
                 return;
             }
             gapi.client.drive.files.list({ // list the images in the image folder
                 'q': `"${res.result.files[0].id}" in parents`,
             }).then(function (response) {
-                console.log(response.result.files)
                 if (response.result.files.length === 0) {
                     console.log("No images found in the images folder");
                     callback(loader);
@@ -85,13 +82,12 @@ class File {
     }
 
     loadSounds(gameId, playList, callback) {
-        console.log("sounds");
         var counter = 0;
         gapi.client.drive.files.list({ // find the sound folder in the game folder
             'q': `"${gameId}" in parents and name="sounds" and mimeType = "application/vnd.google-apps.folder"`
         }).then(function (res) {
             if (res.result.files.length === 0) {
-                console.log("No sounds folder found");
+                console.error("No sounds folder found");
                 callback(playList);
                 return;
             }
@@ -302,7 +298,6 @@ class File {
                 const objectUrl = URL.createObjectURL(blob);
                 function tryToAddResource() {
                     if (app.loader.loading) {
-                        console.log(app.loader.loading);
                         setTimeout(tryToAddResource, 10);
                     } else {
                         if (type == "Image" || type == "Animation") {

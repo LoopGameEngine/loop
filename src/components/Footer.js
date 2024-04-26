@@ -10,7 +10,6 @@ import tikTokImage from '../images/tic-toc.png';
 const Footer = () => {
   const theme = useTheme();
   const currentYear = new Date().getFullYear();
-  const gameId = "1K2Wv1d8lMujZALZzMxDitE_Z5JphGyUO";  // Sustituye esto con el ID real del juego
 
   return (
     <div style={{ zIndex: 1000 }}>
@@ -66,11 +65,6 @@ const Footer = () => {
               |
               <RouterLink to="/privacy-policy" style={{ color: 'inherit', textDecoration: 'none' }}>
                 Privacy Policy
-              </RouterLink>
-              |
-              {/* Ajuste del RouterLink para incluir el ID del juego */}
-              <RouterLink to={`/play/${gameId}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                Play Test
               </RouterLink>
             </Typography>
           </Grid>

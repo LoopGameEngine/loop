@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Switch, FormControlLabel, TextField, Snackbar, IconButton, Typography, Box } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
-const ShareDialog = ({ open, onClose, gameName, handleShareGame, handleUnshareGame, handleShareToggle, isShared }) => {
+const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleUnshareGame, handleShareToggle, isShared }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
@@ -27,6 +27,9 @@ const ShareDialog = ({ open, onClose, gameName, handleShareGame, handleUnshareGa
     setSnackbarOpen(false);
   };
 
+  // Obtener el servidor dinámico
+  const server = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://loop2d.com';
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>{`Share "${gameName}"`}</DialogTitle>
@@ -44,12 +47,12 @@ const ShareDialog = ({ open, onClose, gameName, handleShareGame, handleUnshareGa
           fullWidth
           margin="dense"
           label="Link to Play the Game"
-          value={isShared ? `http://playgame.com/${gameName}` : ''}
+          value={isShared ? `${server}/play/${gameID}` : ''}
           disabled={!isShared}
           InputProps={{
             readOnly: true,
             endAdornment: (
-              <IconButton onClick={() => handleCopy(`http://playgame.com/${gameName}`)} disabled={!isShared}>
+              <IconButton onClick={() => handleCopy(`${server}/play/${gameID}`)} disabled={!isShared}>
                 <ContentCopyIcon />
               </IconButton>
             )
@@ -59,12 +62,12 @@ const ShareDialog = ({ open, onClose, gameName, handleShareGame, handleUnshareGa
           fullWidth
           margin="dense"
           label="Link to Copy the Game"
-          value={isShared ? `http://copygame.com/${gameName}` : ''}
+          value={isShared ? `${server}/copy/${gameID}` : ''}
           disabled={!isShared}
           InputProps={{
             readOnly: true,
             endAdornment: (
-              <IconButton onClick={() => handleCopy(`http://copygame.com/${gameName}`)} disabled={!isShared}>
+              <IconButton onClick={() => handleCopy(`${server}/copy/${gameID}`)} disabled={!isShared}>
                 <ContentCopyIcon />
               </IconButton>
             )
@@ -85,7 +88,6 @@ const ShareDialog = ({ open, onClose, gameName, handleShareGame, handleUnshareGa
 };
 
 export default ShareDialog;
-
 
 
 

@@ -81,6 +81,7 @@ const GameCard = ({ game, handleEditGame, handlePlayGame, handleDuplicateGame, h
             <ShareDialog
                 open={shareDialogOpen}
                 onClose={closeShareDialog}
+                gameID={game.id}
                 gameName={game.name}
                 handleShareGame={handleShareGame}
                 handleUnshareGame={handleUnshareGame}
