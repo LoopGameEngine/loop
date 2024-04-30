@@ -84,13 +84,14 @@ const Games = () => {
         </Box>
       )}
       <div style={{ padding: '64px 96px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '48px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '48px', flexWrap: 'wrap' }}>
           <Button
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
             onClick={() => handleAction(createGame, loopFolderID, "a new game")}
             disabled={loading}
+            style={{ marginBottom: '16px', marginRight: '16px' }}
           >
             New Game
           </Button>
@@ -99,7 +100,7 @@ const Games = () => {
             color="primary"
             onClick={handleCopyGameDialogOpen} // Abre el diálogo al hacer clic en este botón
             disabled={loading}
-            style={{ marginLeft: 20 }}
+            style={{ marginBottom: '16px' }}
           >
             Copy Shared Game
           </Button>
