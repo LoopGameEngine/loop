@@ -108,7 +108,6 @@ export async function duplicateGame(handleShowFile, folderID, originalGameID, ga
   try {
     const newGameName = `${gameName} - Copy`;
     const newGameID = await createFolder(newGameName, folderID);
-    console.log(folderID, originalGameID, gameName, newGameID, newGameName);
     await Promise.all([
       await copyFile(originalGameID, newGameID, 'game.json', newGameName),
       await copyFile(originalGameID, newGameID, 'image.jpg'),
@@ -122,29 +121,23 @@ export async function duplicateGame(handleShowFile, folderID, originalGameID, ga
   }
 }
 
-export async function copySharedGame(handleShowFile, folderID, originalGameID, gameName) {
-  try {
-    const newGameName = `${gameName} Game - Copy`;
-    const newGameID = await createFolder(newGameName, folderID);
-    console.log(folderID, originalGameID, gameName, newGameID, newGameName);
-    const response = await gapi.client.drive.files.list({
-      'q': `"${originalGameID}" in parents and name="game.json" and trashed=false`,
-      'fields': 'nextPageToken, files(id, name)'
-    })
-    console.log(response);
-    await Promise.all([
-      await copyFile(originalGameID, newGameID, 'game.json', newGameName),
-      await copyFile(originalGameID, newGameID, 'image.jpg'),
-      duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'images'),
-      duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'sounds'),
-    ]);
-    return { id: newGameID, name: newGameName };  // Devuelve el ID y nombre del nuevo juego
-  }
-  catch (error) {
-    console.error(`Failed to duplicate game '${originalGameID}':`, error);
-    throw error;
-  }
-}
+// export async function copySharedGame(handleShowFile, folderID, originalGameID, gameName) {
+//   try {
+//     const newGameName = `${gameName} Game - Copy`;
+//     const newGameID = await createFolder(newGameName, folderID);
+//     await Promise.all([
+//       await copyFile(originalGameID, newGameID, 'game.json', newGameName),
+//       await copyFile(originalGameID, newGameID, 'image.jpg'),
+//       duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'images'),
+//       duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'sounds'),
+//     ]);
+//     return { id: newGameID, name: newGameName };  // Devuelve el ID y nombre del nuevo juego
+//   }
+//   catch (error) {
+//     console.error(`Failed to duplicate game '${originalGameID}':`, error);
+//     throw error;
+//   }
+// }
 
 export async function deleteGame(gameID) {
   try {
@@ -198,7 +191,6 @@ export async function unshareGame(gameID) {
     throw error;
   }
 }
-
 
 async function getImageDownloadUrl(gameFolderID) {
   try {
@@ -355,19 +347,16 @@ async function duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 
 
 async function copyFile(originalGameID, newGameID, fileName, gameName) {
   try {
-    console.log("copyfile", originalGameID, newGameID, fileName, gameName);
     const searchResponse = await gapi.client.drive.files.list({
       q: `name='${fileName}' and '${originalGameID}' in parents and trashed=false`,
       fields: 'files(id, name)',
       spaces: 'drive',
     });
-    console.log(searchResponse);
     const fileId = searchResponse.result.files[0].id;
     const copyResponse = await gapi.client.drive.files.copy({
       fileId: fileId,
       parents: [newGameID],
     });
-    console.log(copyResponse);
     if (fileName === 'game.json') {
       await changeNameInJson(copyResponse.result.id, `${gameName}`);
     }

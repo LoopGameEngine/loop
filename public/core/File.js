@@ -132,28 +132,25 @@ class File {
             }).then(function (response) {
                 if (response.result.files.length > 0) {
                     var fileId = response.result.files[0].id;
-                    // Modificar el nombre del directorio con gameName
                     gapi.client.request({
                         path: `/drive/v3/files/${gameID}`,
                         method: 'PATCH',
                         body: { name: gameName }
                     }).then(() => {
-                        // Guardar el archivo json con el nuevo nombre
                         gapi.client.request({
                             path: `/upload/drive/v3/files/${fileId}`,
                             method: 'PATCH',
                             body: json
                         }).then(() => {
                             Command.takeScreenshot();
-                            resolve(); // Resuelve la promesa si todo ha ido bien
-                        }).catch(reject); // Rechaza la promesa si hay un error en esta etapa
-                    }).catch(reject); // Rechaza la promesa si hay un error en esta etapa
+                            resolve(); 
+                        }).catch(reject); 
+                    }).catch(reject); 
                 } else {
-                    // Manejar el caso en que no se encuentra el archivo
                     reject(new Error("No se encontró el archivo game.json"));
                 }
             }, function (error) {
-                reject(error); // Rechaza la promesa si hay un error en esta etapa
+                reject(error); 
             });
         });
     }

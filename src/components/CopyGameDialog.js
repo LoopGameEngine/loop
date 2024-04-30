@@ -5,7 +5,6 @@ const CopyGameDialog = ({ open, onClose, handleDuplicateGame }) => {
 
     const handleDuplicateButtonClick = () => {
         const gameIDToCopy = document.getElementById('gameIDTextField').value;
-        console.log("gameID ",gameIDToCopy);
         handleDuplicateGame(gameIDToCopy, ""); // Pasar solo el gameID
         onClose(); 
     };

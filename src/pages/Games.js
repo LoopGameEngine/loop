@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { copySharedGame, listDriveGames, createGame, duplicateGame, deleteGame, shareGame, unshareGame } from '../apis/driveAPI';
+import { listDriveGames, createGame, duplicateGame, deleteGame, shareGame, unshareGame } from '../apis/driveAPI';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Typography } from '@mui/material';
@@ -127,7 +127,7 @@ const Games = () => {
       <CopyGameDialog
         open={showCopyDialog}
         onClose={handleCopyGameDialogClose}
-        handleDuplicateGame={(gameID) => handleAction(copySharedGame, handleShowFile, loopFolderID, gameID, "Shared")}
+        handleDuplicateGame={(gameID) => handleAction(duplicateGame, handleShowFile, loopFolderID, gameID, "Shared Game")}
       />
     </div>
   );

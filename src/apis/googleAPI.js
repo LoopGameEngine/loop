@@ -2,7 +2,6 @@
 /* global gapi, google  */
 
 const userInfoEndpoint = 'https://www.googleapis.com/oauth2/v1/userinfo';
-
 let tokenClient;
 
 export async function initGoogleAPI(CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES) {
@@ -27,7 +26,7 @@ export async function initGoogleAPI(CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES) 
 
 export async function login() {
   try {
-    const token = await new Promise((resolve, reject) => {
+     const token = await new Promise((resolve, reject) => {
       tokenClient.callback = (response) => {
         if (response.error) {
           reject(`Login failed: ${response.error}`);
@@ -35,7 +34,7 @@ export async function login() {
           resolve(response);
         }
       };
-      tokenClient.requestAccessToken();
+      tokenClient.requestAccessToken({prompt: 'select_account'});
     });
     return token;
   } catch (error) {
@@ -45,7 +44,11 @@ export async function login() {
 
 export async function logout() {
   try {
-    google.accounts.id.disableAutoSelect();
+    const token = gapi.client.getToken();
+    if (token !== null) {
+      gapi.client.setToken('');
+      //google.accounts.oauth2.revoke(token.access_token);
+    }
   } catch (error) {
     console.error(`Error during logout: ${error.message}`);
   }
