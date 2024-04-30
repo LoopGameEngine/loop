@@ -8,7 +8,6 @@ import Games from './pages/Games';
 import Edit from './pages/Edit';
 import Play from './pages/Play';
 import Legal from './pages/Legal';
-import Login from './pages/Login';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Footer from './components/Footer';
 import SessionDialog from './components/SessionDialog';
@@ -92,7 +91,6 @@ function App() {
             </>
           )}
           {/* Renderizar la página Login */}
-          <Route path="/play/:gameID" element={<Login handleLogin={handleLogin} />} />
           <Route path="/legal" element={<Legal />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           {!isSessionActive && <Route path="*" element={<Navigate replace to="/" />} />}

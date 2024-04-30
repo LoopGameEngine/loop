@@ -10,9 +10,9 @@ const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleU
     const newSharedState = !isShared;
     handleShareToggle(newSharedState);
     if (newSharedState) {
-      handleShareGame(); // Actual sharing logic needs to be implemented
+      handleShareGame();
     } else {
-      handleUnshareGame(); // Actual unsharing logic needs to be implemented
+      handleUnshareGame();
     }
   };
 
@@ -27,7 +27,6 @@ const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleU
     setSnackbarOpen(false);
   };
 
-  // Obtener el servidor dinámico
   const server = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://loop2d.com';
 
   return (
@@ -47,12 +46,12 @@ const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleU
           fullWidth
           margin="dense"
           label="Link to Play the Game"
-          value={isShared ? `${server}/#/play/${gameID}` : ''}
+          value={isShared ? `${server}/play/${gameID}` : ''}
           disabled={!isShared}
           InputProps={{
             readOnly: true,
             endAdornment: (
-              <IconButton onClick={() => handleCopy(`${server}/#/play/${gameID}`)} disabled={!isShared}>
+              <IconButton onClick={() => handleCopy(`${server}/play/${gameID}`)} disabled={!isShared}>
                 <ContentCopyIcon />
               </IconButton>
             )
@@ -61,13 +60,13 @@ const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleU
         <TextField
           fullWidth
           margin="dense"
-          label="Link to Copy the Game"
-          value={isShared ? `${server}/#/copy/${gameID}` : ''}
+          label="ID to Copy the Game"
+          value={isShared ? `${gameID}` : ''}
           disabled={!isShared}
           InputProps={{
             readOnly: true,
             endAdornment: (
-              <IconButton onClick={() => handleCopy(`${server}/#/copy/${gameID}`)} disabled={!isShared}>
+              <IconButton onClick={() => handleCopy(`${gameID}`)} disabled={!isShared}>
                 <ContentCopyIcon />
               </IconButton>
             )

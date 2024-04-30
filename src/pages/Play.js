@@ -1,15 +1,12 @@
 // play.js
 import React, { useEffect, useRef, useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppContext } from '../AppContext';
 
 function Play() {
-    const { gameID: urlGameID } = useParams();
-    const { gameID: contextGameID, token, API_KEY, DISCOVERY_DOCS } = useAppContext();
-
-    const gameID = urlGameID || contextGameID;
+    const { gameID, token, API_KEY, DISCOVERY_DOCS } = useAppContext();
 
     const navigate = useNavigate();
     const iframeRef = useRef(null);

@@ -1,6 +1,5 @@
-// Games.js
 import React, { useEffect, useState, useCallback } from 'react';
-import { listDriveGames, createGame, duplicateGame, deleteGame, shareGame, unshareGame} from '../apis/driveAPI';
+import { copySharedGame, listDriveGames, createGame, duplicateGame, deleteGame, shareGame, unshareGame } from '../apis/driveAPI';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Typography } from '@mui/material';
@@ -9,10 +8,12 @@ import AddIcon from '@mui/icons-material/Add';
 import GameCard from '../components/GameCard';
 import { useAppContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
+import CopyGameDialog from '../components/CopyGameDialog'; // Importa el componente de diálogo
 
 const Games = () => {
   const { loopFolderID, gameList, setGameList, setGameID, updateGameList, setUpdateGameList } = useAppContext();
   const [loading, setLoading] = useState(false);
+  const [showCopyDialog, setShowCopyDialog] = useState(false); // Estado para controlar la visibilidad del diálogo
   const navigate = useNavigate();
   const [showFile, setShowFile] = useState('');
 
@@ -54,6 +55,14 @@ const Games = () => {
     navigate(`/${path}`);
   };
 
+  const handleCopyGameDialogOpen = () => {
+    setShowCopyDialog(true); // Abre el diálogo de copia
+  };
+
+  const handleCopyGameDialogClose = () => {
+    setShowCopyDialog(false);
+  };
+
   return (
     <div style={{ position: 'relative' }}>
       {loading && (
@@ -85,6 +94,15 @@ const Games = () => {
           >
             New Game
           </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={handleCopyGameDialogOpen} // Abre el diálogo al hacer clic en este botón
+            disabled={loading}
+            style={{ marginLeft: 20 }}
+          >
+            Copy Shared Game
+          </Button>
         </div>
         <div style={{
           display: 'grid',
@@ -93,7 +111,9 @@ const Games = () => {
           justifyContent: 'center',
         }}>
           {gameList.map((game) => (
-            <GameCard key={game.id} game={game}
+            <GameCard
+              key={game.id}
+              game={game}
               handleEditGame={() => handleNavigation('edit', game.id)}
               handlePlayGame={() => handleNavigation('play', game.id)}
               handleDuplicateGame={() => handleAction(duplicateGame, handleShowFile, loopFolderID, game.id, game.name)}
@@ -104,6 +124,11 @@ const Games = () => {
           ))}
         </div>
       </div>
+      <CopyGameDialog
+        open={showCopyDialog}
+        onClose={handleCopyGameDialogClose}
+        handleDuplicateGame={(gameID) => handleAction(copySharedGame, handleShowFile, loopFolderID, gameID, "Shared")}
+      />
     </div>
   );
 };
