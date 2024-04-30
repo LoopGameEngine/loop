@@ -5,6 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import AddIcon from '@mui/icons-material/Add';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import GameCard from '../components/GameCard';
 import { useAppContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
@@ -98,6 +99,7 @@ const Games = () => {
           <Button
             variant="outlined"
             color="primary"
+            startIcon={<ContentCopyIcon />}
             onClick={handleCopyGameDialogOpen} // Abre el diálogo al hacer clic en este botón
             disabled={loading}
             style={{ marginBottom: '16px' }}
