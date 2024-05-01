@@ -30,19 +30,6 @@ export async function createFolder(folderName, parent) {
       fields: 'id',
     });
     const createdFolderId = response.result.id;
-    if (!createdFolderId) {
-      throw new Error('Failed to create folder: No ID returned');
-    }
-    if (folderName === "Public") {
-      const permissionsRequestBody = {
-        role: 'reader',
-        type: 'anyone',
-      };
-      await gapi.client.drive.permissions.create({
-        fileId: createdFolderId,
-        resource: permissionsRequestBody,
-      });
-    }
     return createdFolderId;
   } catch (error) {
     console.error(`Error creating folder '${folderName}' with parent '${parent}':`, error.message || error);
@@ -62,10 +49,7 @@ export async function listDriveGames(folderID) {
     if (gameFiles && gameFiles.length > 0) {
       const imageAndPermissionPromises = gameFiles.map(async (file) => {
         try {
-          // Obtener la URL de la imagen
           file.imageUrl = await getImageDownloadUrl(file.id);
-
-          // Obtener permisos del archivo
           const permissionsResponse = await gapi.client.drive.permissions.list({
             fileId: file.id,
             fields: 'permissions(id, type, role)'
@@ -73,8 +57,8 @@ export async function listDriveGames(folderID) {
           file.isShared = permissionsResponse.result.permissions.some(perm => perm.type === 'anyone' && perm.role === 'reader');
         } catch (imageError) {
           console.error(`Error obtaining data for file ${file.id}: ${imageError}`);
-          file.imageUrl = ''; // Proporcionar una URL de imagen predeterminada o dejar vacío
-          file.isShared = false; // Asumir no compartido si hay un error
+          file.imageUrl = '';
+          file.isShared = false;
         }
       });
       await Promise.all(imageAndPermissionPromises);
@@ -86,7 +70,6 @@ export async function listDriveGames(folderID) {
     throw error;
   }
 }
-
 
 export async function createGame(appFolderID) {
   try {
@@ -106,38 +89,28 @@ export async function createGame(appFolderID) {
 
 export async function duplicateGame(handleShowFile, folderID, originalGameID, gameName) {
   try {
+    const response = await gapi.client.drive.files.get({
+      fileId: originalGameID,
+      fields: 'id',
+    });
+    const originalGameExists = response.result && response.result.id === originalGameID;
+    if (!originalGameExists) {
+      throw new Error(`Game with ID '${originalGameID}' does not exist.`);
+    }
     const newGameName = `${gameName} - Copy`;
     const newGameID = await createFolder(newGameName, folderID);
     await Promise.all([
-      await copyFile(originalGameID, newGameID, 'game.json', newGameName),
-      await copyFile(originalGameID, newGameID, 'image.jpg'),
+      copyFile(originalGameID, newGameID, 'game.json', newGameName),
+      copyFile(originalGameID, newGameID, 'image.jpg'),
       duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'images'),
       duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'sounds'),
     ]);
-    return { id: newGameID, name: newGameName };  // Devuelve el ID y nombre del nuevo juego
+    return { id: newGameID, name: newGameName }; 
   } catch (error) {
     console.error(`Failed to duplicate game '${originalGameID}':`, error);
     throw error;
   }
 }
-
-// export async function copySharedGame(handleShowFile, folderID, originalGameID, gameName) {
-//   try {
-//     const newGameName = `${gameName} Game - Copy`;
-//     const newGameID = await createFolder(newGameName, folderID);
-//     await Promise.all([
-//       await copyFile(originalGameID, newGameID, 'game.json', newGameName),
-//       await copyFile(originalGameID, newGameID, 'image.jpg'),
-//       duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'images'),
-//       duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'sounds'),
-//     ]);
-//     return { id: newGameID, name: newGameName };  // Devuelve el ID y nombre del nuevo juego
-//   }
-//   catch (error) {
-//     console.error(`Failed to duplicate game '${originalGameID}':`, error);
-//     throw error;
-//   }
-// }
 
 export async function deleteGame(gameID) {
   try {
@@ -159,7 +132,6 @@ export async function shareGame(gameID) {
       fileId: gameID
     };
     await gapi.client.drive.permissions.create(permission);
-    console.log("Juego compartido:", gameID);
   } catch (error) {
     console.error("Error al compartir el juego:", error);
     throw error;
@@ -171,21 +143,16 @@ export async function unshareGame(gameID) {
     const response = await gapi.client.drive.permissions.list({
       fileId: gameID,
     });
-
     const permissions = response.result.permissions;
     const permissionToRemove = permissions.find(permission => permission.role === 'reader' && permission.type === 'anyone');
-
     if (!permissionToRemove) {
       console.warn("El juego no está compartido:", gameID);
       return;
     }
-
     await gapi.client.drive.permissions.delete({
       fileId: gameID,
       permissionId: permissionToRemove.id,
     });
-
-    console.log("Juego dejado de compartir:", gameID);
   } catch (error) {
     console.error("Error al dejar de compartir el juego:", error);
     throw error;

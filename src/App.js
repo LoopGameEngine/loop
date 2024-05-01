@@ -16,11 +16,10 @@ import { useAppContext } from './AppContext';
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
-  const isFullPage = location.pathname === '/edit' || location.pathname === '/login' || location.pathname.match(/^\/play\/.+$/);
-  const { setGameID, setToken, setUserInfo, setLoopFolderID, setGameList, setUpdateGameList,
+  const isFullPage = location.pathname === '/edit';
+  const {  setToken, setUserInfo, setLoopFolderID, setGameList, setUpdateGameList,
     expirationTimestamp, setExpirationTimestamp, isSessionActive, setIsSessionActive,
     CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES } = useAppContext();
-  const { pathname } = location;
   const [isSessionDialogOpen, setIsSessionDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -39,15 +38,7 @@ function App() {
     setIsSessionDialogOpen(false);
     await initGoogleAPI(CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES);
     const newToken = await login();
-    if (!isSessionActive) {
-      if (pathname.match(/^\/play\/.+$/)) {
-        const gameId = pathname.split('/').pop();
-        setGameID(gameId);
-        navigate(`/play/`);
-      } else {
-        navigate('/games');
-      }
-    }
+    if (!isSessionActive) navigate('/games');
     setIsSessionActive(true);
     setToken(newToken);
     let expiresIn = newToken.expires_in - 300; // five minutes less

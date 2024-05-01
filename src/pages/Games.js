@@ -48,7 +48,10 @@ const Games = () => {
       await action(...args);
       setUpdateGameList(true);
       setShowFile('');
-    } catch (error) { console.error('Error performing game operation:', error.message); }
+    } catch (error) { 
+      console.error('Error performing game operation:', error.message);
+      setLoading(false);
+   }
   };
 
   const handleNavigation = (path, gameID) => {

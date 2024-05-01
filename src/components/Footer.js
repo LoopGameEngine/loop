@@ -22,6 +22,7 @@ const Footer = () => {
           alignItems: 'center',
           flexDirection: 'row',
           py: 2,
+          userSelect: 'none',
         }}
       >
         <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
