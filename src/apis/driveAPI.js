@@ -105,7 +105,7 @@ export async function duplicateGame(handleShowFile, folderID, originalGameID, ga
       duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'images'),
       duplicateSubdirectory(handleShowFile, originalGameID, newGameID, 'sounds'),
     ]);
-    return { id: newGameID, name: newGameName }; 
+    return { id: newGameID, name: newGameName };
   } catch (error) {
     console.error(`Failed to duplicate game '${originalGameID}':`, error);
     throw error;

@@ -5,15 +5,11 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleUnshareGame, handleShareToggle, isShared }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  let newSharedState;
 
   const handleToggleShare = () => {
-    const newSharedState = !isShared;
+    newSharedState = !isShared;
     handleShareToggle(newSharedState);
-    if (newSharedState) {
-      handleShareGame();
-    } else {
-      handleUnshareGame();
-    }
   };
 
   const handleCopy = (link) => {
@@ -24,6 +20,11 @@ const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleU
   };
 
   const handleCloseSnackbar = () => {
+    if (newSharedState) {
+      handleShareGame();
+    } else {
+      handleUnshareGame();
+    }
     setSnackbarOpen(false);
   };
 

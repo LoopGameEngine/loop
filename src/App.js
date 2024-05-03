@@ -6,7 +6,7 @@ import NavBar from './components/NavBar';
 import LandingPage from './pages/LandingPage';
 import Games from './pages/Games';
 import Edit from './pages/Edit';
-import Play from './pages/Play';
+import Test from './pages/Test';
 import Legal from './pages/Legal';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Footer from './components/Footer';
@@ -76,7 +76,7 @@ function App() {
             <>
               <Route path="/games" element={<Games />} />
               <Route path="/edit" element={<Edit />} />
-              <Route path="/play" element={<Play />} />
+              <Route path="/test" element={<Test />} />
             </>
           )}
           {/* Renderizar la página Login */}

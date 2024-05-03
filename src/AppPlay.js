@@ -1,45 +1,33 @@
-import React from 'react';
-import { useTheme } from '@mui/material/styles';
-import Button from '@mui/material/Button'; // Importa el componente Button de Material-UI
-import loopLogo from './images/loop.png';
+import React, { useState } from 'react';
 import { initGoogleAPI, login } from './apis/googleAPI';
 import { useAppContext } from './AppContext';
+import Login from './pages/Login';
+import Play from './pages/Play';
+import { useParams } from 'react-router-dom';
 
 function AppPlay() {
-  const theme = useTheme();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { setToken, CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES } = useAppContext();
+  const { gameId } = useParams();
 
   const handleLogin = async () => {
     await initGoogleAPI(CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES);
     const newToken = await login();
-    setToken(newToken);
+    if (newToken) {
+      setToken(newToken);
+      setIsLoggedIn(true);
+    } else {
+      console.log("Error en el login: No se obtuvo el token");
+    }
   };
 
-  return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100vh',
-      backgroundColor: theme.palette.primary.main
-    }}>
-      <img src={loopLogo} alt="Loop Logo" style={{ width: 300, marginBottom: 20 }} />
+  if (isLoggedIn) {
+    console.log(gameId);
+    return <Play gameId={gameId} />;  // Muestra Play sin cambiar la URL
+  }
 
-      {/* Usa el componente Button con variant="outlined" y ajusta el color del texto y el borde */}
-      <Button
-        variant="outlined"
-        style={{ marginTop: '24px', color: 'white', borderColor: 'white' }}
-        onClick={handleLogin} // Agrega onClick para llamar a handleLogin al hacer clic
-      >
-        Login
-      </Button>
-    </div>
-  );
+  return <Login onLogin={handleLogin} />;
 }
 
 export default AppPlay;
-
-
-
 
