@@ -62,7 +62,7 @@ function Test() {
                 title="Game Engine"
                 ref={iframeRef}
                 onLoad={handleOpenEngine}
-                src="/engine/index.html"
+                src="/engine/"
                 style={{
                     width: '100%',
                     flex: 1,
