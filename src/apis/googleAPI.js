@@ -47,7 +47,7 @@ export async function logout() {
     const token = gapi.client.getToken();
     if (token !== null) {
       gapi.client.setToken('');
-      // google.accounts.oauth2.revoke(token.access_token);
+      google.accounts.oauth2.revoke(token.access_token);
     }
   } catch (error) {
     console.error(`Error during logout: ${error.message}`);

@@ -17,7 +17,7 @@ function Play() {
     }, [gameID, token, API_KEY, DISCOVERY_DOCS]);
 
     return (
-        <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
+        <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: "hidden" }}>
             <iframe
                 title="Game Engine"
                 ref={iframeRef}
