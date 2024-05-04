@@ -124,6 +124,7 @@ export async function deleteGame(gameID) {
 
 export async function shareGame(gameID) {
   try {
+    console.log("shared", gameID);
     const permission = {
       resource: {
         'type': 'anyone',
@@ -140,6 +141,7 @@ export async function shareGame(gameID) {
 
 export async function unshareGame(gameID) {
   try {
+    console.log("unshared", gameID);
     const response = await gapi.client.drive.permissions.list({
       fileId: gameID,
     });

@@ -39,6 +39,7 @@ const Games = () => {
 
   const handleAction = async (action, ...args) => {
     try {
+      console.log(args);
       setLoading(true);
       const gameName = args[args.length - 1];
       let actionName = action.name.replace(/Game/g, '').replace(/([A-Z])/g, ' $1').toLowerCase().trim();
@@ -60,7 +61,7 @@ const Games = () => {
   };
 
   const handleCopyGameDialogOpen = () => {
-    setShowCopyDialog(true); // Abre el diálogo de copia
+    setShowCopyDialog(true); 
   };
 
   const handleCopyGameDialogClose = () => {

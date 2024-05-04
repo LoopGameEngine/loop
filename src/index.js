@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import React from 'react';
 import App from './App';
 import AppPlay from './AppPlay';
@@ -10,7 +10,7 @@ import { ThemeProvider } from '@mui/material/styles';
 const root = createRoot(document.getElementById('root'));
 
 root.render(
-  <BrowserRouter>
+  <HashRouter>
     <AppContextProvider>
       <ThemeProvider theme={theme}>
         <Routes>
@@ -19,6 +19,6 @@ root.render(
         </Routes>
       </ThemeProvider>
     </AppContextProvider>
-  </BrowserRouter>
+  </HashRouter>
 
 );
