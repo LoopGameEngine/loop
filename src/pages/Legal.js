@@ -39,7 +39,7 @@ function Legal() {
         </Typography>
         <Typography variant="body1">
           <strong>Contact</strong><br />
-          If you have any questions about these Terms of Use, please do not hesitate to contact me at [Your Contact Email].
+          If you have any questions about these Terms of Use, please do not hesitate to contact us at contact@loop2d.com.
         </Typography>
       </Box>
     </Container>
@@ -47,4 +47,3 @@ function Legal() {
 }
 
 export default Legal;
-

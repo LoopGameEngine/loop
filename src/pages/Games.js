@@ -108,7 +108,7 @@ const Games = () => {
             disabled={loading}
             style={{ marginBottom: '16px' }}
           >
-            Copy Shared Game
+            Copy Game
           </Button>
         </div>
         <div style={{
