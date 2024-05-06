@@ -1,8 +1,8 @@
 // TutorialSection.js
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
-import YouTubeIcon from '@mui/icons-material/YouTube'; 
-import YoutubeImage from '../../images/youtube.png'; 
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import YoutubeImage from '../../images/youtube.png';
 
 const TutorialSection = () => {
   return (
@@ -24,28 +24,28 @@ const TutorialSection = () => {
         src={YoutubeImage}
         alt="YouTube Tutorials"
         sx={{
-          width: '100%', 
-          maxWidth: 260, 
-          height: 'auto', 
-          marginTop: 3, 
-          display: 'block', 
-          marginLeft: 'auto', 
-          marginRight: 'auto', 
+          width: '100%',
+          maxWidth: 260,
+          height: 'auto',
+          marginTop: 3,
+          display: 'block',
+          marginLeft: 'auto',
+          marginRight: 'auto',
         }}
       />
       <Button
         variant="contained"
         sx={{
-          mt: 2, // Añade un margen superior para asegurar espacio con elementos arriba
-          backgroundColor: '#FF0000', 
+          mt: 2, 
+          backgroundColor: '#FF0000',
           '&:hover': {
-            backgroundColor: '#E60000', 
+            backgroundColor: '#E60000',
           },
-          color: '#FFFFFF', 
-          padding: '10px 20px', 
+          color: '#FFFFFF',
+          padding: '10px 20px',
         }}
         startIcon={<YouTubeIcon />}
-        href="https://www.youtube.com/@gamesonomy8970" // Asegúrate de cambiar esto a tu URL real
+        href="https://www.youtube.com/channel/UCTz0AilRlRcsG5UOoQtXr4Q" 
         target="_blank"
         rel="noopener noreferrer"
       >

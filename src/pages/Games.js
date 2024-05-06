@@ -49,10 +49,10 @@ const Games = () => {
       await action(...args);
       setUpdateGameList(true);
       setShowFile('');
-    } catch (error) { 
+    } catch (error) {
       console.error('Error performing game operation:', error.message);
       setLoading(false);
-   }
+    }
   };
 
   const handleNavigation = (path, gameID) => {
@@ -61,7 +61,7 @@ const Games = () => {
   };
 
   const handleCopyGameDialogOpen = () => {
-    setShowCopyDialog(true); 
+    setShowCopyDialog(true);
   };
 
   const handleCopyGameDialogClose = () => {
