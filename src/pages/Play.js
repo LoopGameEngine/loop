@@ -3,14 +3,13 @@ import { useAppContext } from '../AppContext';
 
 function Play() {
     const { gameID, token, API_KEY, DISCOVERY_DOCS } = useAppContext();
-
     const iframeRef = useRef(null);
 
-    const handleOpenEngine = useCallback(() => {
+    const handleOpenEngine = useCallback((fullscreen) => {
         if (iframeRef.current) {
             const messageData = {
                 type: 'playGame',
-                data: { gameID, token, API_KEY, DISCOVERY_DOCS }
+                data: { gameID, token, API_KEY, DISCOVERY_DOCS, fullscreen: true }
             };
             iframeRef.current.contentWindow.postMessage(messageData, '*');
         }
@@ -21,7 +20,8 @@ function Play() {
             <iframe
                 title="Game Engine"
                 ref={iframeRef}
-                onLoad={handleOpenEngine}
+                id="game-iframe"
+                onLoad={() => handleOpenEngine(false)}
                 src="/engine/"
                 style={{
                     width: '100%',

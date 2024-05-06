@@ -1,6 +1,6 @@
 class Engine {
 
-    constructor(gameModel) {
+    constructor(gameModel, fullscreen) {
         this.gameModel = gameModel;
         // Define debug mode (boolean property that can defined as game property in the editor to show collision shapes)
         this.debug = gameModel.debug || false;
@@ -10,7 +10,7 @@ class Engine {
         this.currentTime = this.accumulator = this.frameTime = this.time = 0.0;
         // Create engines
         this.gameObjects = new Map();
-        this.render = new Render(this.gameObjects);
+        this.render = new Render(this.gameObjects, fullscreen);
         this.physics = new Physics(this.gameObjects);
         this.logic = new Logic(this.gameObjects);
         this.input = new Input(this.render.stage);

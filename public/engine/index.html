@@ -81,7 +81,7 @@
 		if (!window.cancelAnimationFrame) window.cancelAnimationFrame = function (id) { clearTimeout(id); };
 
 		// Game info 
-		let gameID, token, API_KEY, DISCOVERY_DOCS, gameData, player;
+		let gameID, token, API_KEY, DISCOVERY_DOCS, gameData, player, fullscreen;
 		var editor = false;
 
 		window.addEventListener('message', (event) => {
@@ -92,6 +92,7 @@
 				token = message.data.token;
 				API_KEY = message.data.API_KEY;
 				DISCOVERY_DOCS = message.data.DISCOVERY_DOCS;
+				fullscreen = message.data.fullscreen;
 				gapiLoading();
 			}
 		});
@@ -105,7 +106,7 @@
 					if (token) {
 						gapi.client.setToken(token);
 					}
-					player = new Player(gameID);
+					player = new Player(gameID, fullscreen);
 				}).catch(error => {
 					console.error("Failed to initialize GAPI client", error);
 				});
