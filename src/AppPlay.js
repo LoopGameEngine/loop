@@ -1,3 +1,4 @@
+// AppPlay.js
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { initGoogleAPI, login } from './apis/googleAPI';
@@ -10,7 +11,7 @@ function AppPlay() {
   const { gameId } = useParams();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleLogin = async () => {
+  const handleLogin = async () => { // Acepta el nuevo handle como argumento
     try {
       await initGoogleAPI(CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES);
       const newToken = await login();
