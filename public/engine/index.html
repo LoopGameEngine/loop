@@ -2,119 +2,107 @@
 <html>
 
 <head>
-	<style type="text/css">
-		body {
-			background: #353535;
-			margin: 0;
-			padding: 0;
-			width: 100%;
-			height: 100vh;
-			overflow: hidden;
-		}
-
-		canvas {
-			display: block;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translateX(-50%) translateY(-50%);
-		}
-	</style>
-	<title>Loop Engine</title>
+    <link rel="stylesheet" type="text/css" href="./engine.css">
+    <title>Loop Engine</title>
 </head>
 
 <body>
-	<link rel="stylesheet" type="text/css"
-		href="https://unpkg.com/material-components-web@10.0.0/dist/material-components-web.min.css">
-	<script src="libraries/math.js"></script>
-	<script src="libraries/pixi.min.js"></script>
-	<script src="libraries/Planck.js"></script>
-	<script src="libraries/howler.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/material-components-web@10.0.0/dist/material-components-web.min.css">
+    <script src="libraries/math.js"></script>
+    <script src="libraries/pixi.min.js"></script>
+    <script src="libraries/Planck.js"></script>
+    <script src="libraries/howler.min.js"></script>
 
-	<script src="./dialogs/LoadingView.js"></script>
+    <script src="./dialogs/LoadingView.js"></script>
 
-	<script src="Player.js"></script>
+    <script src="Player.js"></script>
 
-	<script src="../core/Game.js"></script>
-	<script src="../core/Scene.js"></script>
-	<script src="../core/Actor.js"></script>
-	<script src="../core/Script.js"></script>
-	<script src="../core/Node.js"></script>
-	<script src="../core/File.js"></script>
-	<script src="../core/Utils.js"></script>
+    <script src="../core/Game.js"></script>
+    <script src="../core/Scene.js"></script>
+    <script src="../core/Actor.js"></script>
+    <script src="../core/Script.js"></script>
+    <script src="../core/Node.js"></script>
+    <script src="../core/File.js"></script>
+    <script src="../core/Utils.js"></script>
 
-	<script src="Physics.js"></script>
-	<script src="Input.js"></script>
-	<script src="Logic.js"></script>
-	<script src="Render.js"></script>
-	<script src="Engine.js"></script>
+    <script src="Physics.js"></script>
+    <script src="Input.js"></script>
+    <script src="Logic.js"></script>
+    <script src="Render.js"></script>
+    <script src="Engine.js"></script>
 
-	<script src="GameState.js"></script>
-	<script src="GameObject.js"></script>
-	<script src="Container.js"></script>
-	<script src="Rigidbody.js"></script>
-	<script src="Rule.js"></script>
-	<script src="Sound.js"></script>
+    <script src="GameState.js"></script>
+    <script src="GameObject.js"></script>
+    <script src="Container.js"></script>
+    <script src="Rigidbody.js"></script>
+    <script src="Rule.js"></script>
+    <script src="Sound.js"></script>
 
-	<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-	<script async defer src="https://apis.google.com/js/api.js"></script>
-	<script async defer src="https://accounts.google.com/gsi/client"></script>
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js"></script>
+    <script async defer src="https://accounts.google.com/gsi/client"></script>
 
-	<script>
+    <script>
 
-		// requestAnimationFrame Polyfill
-		var lastTime = 0, vendors = ['ms', 'moz', 'webkit', 'o'], x, length, currTime, timeToCall;
+        // requestAnimationFrame Polyfill
+        var lastTime = 0, vendors = ['ms', 'moz', 'webkit', 'o'], x, length, currTime, timeToCall;
 
-		for (x = 0, length = vendors.length; x < length && !window.requestAnimationFrame; ++x) {
-			window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-			window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
-		}
+        for (x = 0, length = vendors.length; x < length && !window.requestAnimationFrame; ++x) {
+            window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+            window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+        }
 
-		if (!window.requestAnimationFrame)
-			window.requestAnimationFrame = function (callback, element) {
-				currTime = new Date().getTime();
-				timeToCall = Math.max(0, 16.67 - (currTime - lastTime));
-				lastTime = currTime + timeToCall;
-				return window.setTimeout(function () { callback(currTime + timeToCall); }, timeToCall);
-			};
+        if (!window.requestAnimationFrame)
+            window.requestAnimationFrame = function (callback, element) {
+                currTime = new Date().getTime();
+                timeToCall = Math.max(0, 16.67 - (currTime - lastTime));
+                lastTime = currTime + timeToCall;
+                return window.setTimeout(function () { callback(currTime + timeToCall); }, timeToCall);
+            };
 
-		if (!window.cancelAnimationFrame) window.cancelAnimationFrame = function (id) { clearTimeout(id); };
+        if (!window.cancelAnimationFrame) window.cancelAnimationFrame = function (id) { clearTimeout(id); };
 
-		// Game info 
-		let gameID, token, API_KEY, DISCOVERY_DOCS, gameData, player, fullscreen;
-		var editor = false;
+        // Game info 
+        let gameID, token, API_KEY, DISCOVERY_DOCS, gameData, player, fullscreen;
+        var editor = false;
 
-		window.addEventListener('message', (event) => {
-			if (event.origin !== window.location.origin) return;
-			const message = event.data;
-			if (message.type === 'playGame' && message.data) {
-				gameID = message.data.gameID;
-				token = message.data.token;
-				API_KEY = message.data.API_KEY;
-				DISCOVERY_DOCS = message.data.DISCOVERY_DOCS;
-				fullscreen = message.data.fullscreen;
-				gapiLoading();
-			}
-		});
+        window.addEventListener('message', (event) => {
+            if (event.origin !== window.location.origin) return;
+            const message = event.data;
+            if (message.type === 'playGame' && message.data) {
+                gameID = message.data.gameID;
+                token = message.data.token;
+                API_KEY = message.data.API_KEY;
+                DISCOVERY_DOCS = message.data.DISCOVERY_DOCS;
+                fullscreen = message.data.fullscreen;
 
-		function gapiLoading() {
-			gapi.load('client', () => {
-				gapi.client.init({
-					apiKey: API_KEY,
-					discoveryDocs: DISCOVERY_DOCS,
-				}).then(() => {
-					if (token) {
-						gapi.client.setToken(token);
-					}
-					player = new Player(gameID, fullscreen);
-				}).catch(error => {
-					console.error("Failed to initialize GAPI client", error);
-				});
-			});
-		}
+                // Adjust canvas mode based on fullscreen value
+                document.body.id = fullscreen ? 'fullscreen' : 'windowed';
 
-	</script>
-	<canvas id="main"></canvas>
+                gapiLoading();
+            }
+        });
+
+        function gapiLoading() {
+            gapi.load('client', () => {
+                gapi.client.init({
+                    apiKey: API_KEY,
+                    discoveryDocs: DISCOVERY_DOCS,
+                }).then(() => {
+                    if (token) {
+                        gapi.client.setToken(token);
+                    }
+                    player = new Player(gameID, fullscreen);
+                }).catch(error => {
+                    console.error("Failed to initialize GAPI client", error);
+                });
+            });
+        }
+
+    </script>
+    <div id="game-container">
+        <canvas id="canvas"></canvas>
+    </div>
 </body>
 
 </html>
