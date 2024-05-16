@@ -1,16 +1,33 @@
-import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Switch, FormControlLabel, TextField, Snackbar, IconButton, Typography, Box } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Switch,
+  FormControlLabel,
+  TextField,
+  Snackbar,
+  IconButton,
+  Typography,
+  Box
+} from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleUnshareGame, handleShareToggle, isShared }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [newSharedState, setNewSharedState] = useState(isShared); // Estado para el nuevo valor compartido
+  const [newSharedState, setNewSharedState] = useState(isShared);
+
+  useEffect(() => {
+    if (open) {
+      setNewSharedState(isShared); // Reset the local state when the dialog opens
+    }
+  }, [open, isShared]);
 
   const handleToggleShare = () => {
-    const toggledState = !newSharedState;
-    setNewSharedState(toggledState); // Actualizar el estado del nuevo valor compartido
-    handleShareToggle(toggledState); // Llamar a la función de manejo con el nuevo estado
+    setNewSharedState(!newSharedState);
   };
 
   const handleCopy = (link) => {
@@ -21,19 +38,22 @@ const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleU
   };
 
   const handleDone = () => {
-    if (newSharedState) {
-      handleShareGame();
-    } else {
-      handleUnshareGame();
+    if (newSharedState !== isShared) {
+      if (newSharedState) {
+        handleShareGame();
+      } else {
+        handleUnshareGame();
+      }
+      handleShareToggle(newSharedState);
     }
     setSnackbarOpen(false);
     onClose();
   };
 
-  const server = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://loop2d.com';
+  const server = window.location.hostname === 'lvh.me' ? 'https://play.lvh.me:3000' : 'https://play.loop2d.com';
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} onBackdropClick={onClose}>
       <DialogTitle>{`Share "${gameName}"`}</DialogTitle>
       <DialogContent>
         <Typography variant="body1">
@@ -49,12 +69,12 @@ const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleU
           fullWidth
           margin="dense"
           label="Link to Play the Game"
-          value={newSharedState ? `${server}/#/play/${gameID}` : ''}
+          value={newSharedState ? `${server}/${gameID}` : ''}
           disabled={!newSharedState}
           InputProps={{
             readOnly: true,
             endAdornment: (
-              <IconButton onClick={() => handleCopy(`${server}/#/play/${gameID}`)} disabled={!newSharedState}>
+              <IconButton onClick={() => handleCopy(`${server}/${gameID}`)} disabled={!newSharedState}>
                 <ContentCopyIcon />
               </IconButton>
             )
@@ -78,17 +98,20 @@ const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleU
       </DialogContent>
       <DialogActions>
         <Button onClick={handleDone}>Done</Button>
+        <Button onClick={onClose}>Cancel</Button>
       </DialogActions>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
         message={snackbarMessage}
+        onClose={() => setSnackbarOpen(false)}
       />
     </Dialog>
   );
 };
 
 export default ShareDialog;
+
 
 
 

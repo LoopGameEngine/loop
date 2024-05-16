@@ -1,17 +1,16 @@
-// AppPlay.js
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { initGoogleAPI, login } from './apis/googleAPI';
 import { useAppContext } from './AppContext';
 import Login from './pages/Login';
-import Play from './pages/Play';
+import Resolution from './pages/Resolution';
 
 function AppPlay() {
   const { setToken, setGameID, CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES } = useAppContext();
   const { gameId } = useParams();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleLogin = async () => { // Acepta el nuevo handle como argumento
+  const handleLogin = async () => {
     try {
       await initGoogleAPI(CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES);
       const newToken = await login();
@@ -29,16 +28,11 @@ function AppPlay() {
 
   return (
     <div>
-      {isLoggedIn ? <Play /> : <Login onLogin={handleLogin} />}
+      {isLoggedIn ? <Resolution /> : <Login onLogin={handleLogin} />}
     </div>
   );
 }
 
 export default AppPlay;
-
-
-
-
-
 
 

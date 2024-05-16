@@ -1,68 +1,74 @@
-import React, { useRef, useCallback, useState } from 'react';
+// test.js
+import React, { useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { useAppContext } from '../AppContext';
-import MadeWith from './sections/MadeWith';
 
 function Play() {
     const { gameID, token, API_KEY, DISCOVERY_DOCS } = useAppContext();
+
+    const navigate = useNavigate();
     const iframeRef = useRef(null);
-    const [isFullscreen, setIsFullscreen] = useState(false);
+
+    const handleCloseEngine = useCallback(() => {
+        navigate('/games');
+    }, [navigate]);
 
     const handleOpenEngine = useCallback(() => {
         if (iframeRef.current) {
             const messageData = {
                 type: 'playGame',
-                data: { gameID, token, API_KEY, DISCOVERY_DOCS, fullscreen: true }
+                data: { gameID, token, API_KEY, DISCOVERY_DOCS }
             };
             iframeRef.current.contentWindow.postMessage(messageData, '*');
         }
     }, [gameID, token, API_KEY, DISCOVERY_DOCS]);
 
-    const requestFullscreen = () => {
-        const element = document.documentElement;
-        if (element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.mozRequestFullScreen) { // Firefox
-            element.mozRequestFullScreen();
-        } else if (element.webkitRequestFullscreen) { // Chrome, Safari and Opera
-            element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) { // IE/Edge
-            element.msRequestFullscreen();
-        }
-        setIsFullscreen(true);
-    };
+    useEffect(() => {
+        const messageHandler = (event) => {
+            if (event.data && event.data.type === "closeGame") {
+                handleCloseEngine();
+            }
+        };
 
-    const startGame = (fullscreen) => {
-        if (fullscreen) {
-            requestFullscreen();
-        } else {
-            setIsFullscreen(true);
-        }
-    };
+        window.addEventListener('message', messageHandler);
+
+        return () => {
+            window.removeEventListener('message', messageHandler);
+        };
+    }, [handleCloseEngine]);
 
     return (
-        <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', background: '#353535' }}>
-            {isFullscreen ? (
-                <iframe
-                    title="Game Engine"
-                    ref={iframeRef}
-                    id="game-iframe"
-                    onLoad={handleOpenEngine}
-                    src="/engine/"
-                    style={{
-                        width: '100vw',
-                        height: '100vh',
-                        border: 'none',
-                        position: 'absolute',
-                        top: 0,
-                        left: 0
-                    }}
-                ></iframe>
-            ) : (
-                <MadeWith
-                    onFullscreen={() => startGame(true)}
-                    onWindowed={() => startGame(false)}
-                />
-            )}
+        <div style={{
+            position: 'relative',
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+        }}>
+            <IconButton
+                style={{
+                    position: 'absolute',
+                    top: '8px',
+                    right: '8px',
+                    zIndex: 2,
+                    color: 'white'
+                }}
+                onClick={handleCloseEngine}
+            >
+                <CloseIcon />
+            </IconButton>
+            <iframe
+                title="Game Engine"
+                ref={iframeRef}
+                onLoad={handleOpenEngine}
+                src="/engine/"
+                style={{
+                    width: '100%',
+                    flex: 1,
+                    border: 'none',
+                }}
+            ></iframe>
         </div>
     );
 }

@@ -6,7 +6,7 @@ import NavBar from './components/NavBar';
 import LandingPage from './pages/LandingPage';
 import Games from './pages/Games';
 import Edit from './pages/Edit';
-import Test from './pages/Test';
+import Play from './pages/Play';
 import Legal from './pages/Legal';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Footer from './components/Footer';
@@ -17,7 +17,7 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const isFullPage = location.pathname === '/edit';
-  const {  setToken, setUserInfo, setLoopFolderID, setGameList, setUpdateGameList,
+  const { setToken, setUserInfo, setLoopFolderID, setGameList, setUpdateGameList,
     expirationTimestamp, setExpirationTimestamp, isSessionActive, setIsSessionActive,
     CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES } = useAppContext();
   const [isSessionDialogOpen, setIsSessionDialogOpen] = useState(false);
@@ -76,7 +76,7 @@ function App() {
             <>
               <Route path="/games" element={<Games />} />
               <Route path="/edit" element={<Edit />} />
-              <Route path="/test" element={<Test />} />
+              <Route path="/play" element={<Play />} />
             </>
           )}
           {/* Renderizar la página Login */}

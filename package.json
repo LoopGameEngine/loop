@@ -10,6 +10,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "express": "^4.19.2",
     "gapi": "^0.0.3",
     "jszip": "^3.10.1",
     "jwt-decode": "^4.0.0",
@@ -20,7 +21,7 @@
     "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://loop2d.com/#",
+  "homepage": "https://loop2d.com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

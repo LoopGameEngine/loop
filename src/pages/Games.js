@@ -39,13 +39,14 @@ const Games = () => {
 
   const handleAction = async (action, ...args) => {
     try {
-      console.log(args);
       setLoading(true);
       const gameName = args[args.length - 1];
       let actionName = action.name.replace(/Game/g, '').replace(/([A-Z])/g, ' $1').toLowerCase().trim();
-      let confirmationMessage = `Are you sure you want to ${actionName} ${gameName}?`;
-      const confirmed = window.confirm(confirmationMessage);
-      if (!confirmed) return setLoading(false);
+      if (!actionName.includes('share')) {
+        let confirmationMessage = `Are you sure you want to ${actionName} ${gameName}?`;
+        const confirmed = window.confirm(confirmationMessage);
+        if (!confirmed) return setLoading(false);
+      }
       await action(...args);
       setUpdateGameList(true);
       setShowFile('');
