@@ -50,7 +50,8 @@ const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleU
     onClose();
   };
 
-  const server = window.location.hostname === 'lvh.me' ? 'https://play.lvh.me:3000' : 'https://play.loop2d.com';
+  const server = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://loop2d.com';
+  const playUrl = `${server}/?play=${gameID}`;
 
   return (
     <Dialog open={open} onClose={onClose} onBackdropClick={onClose}>
@@ -69,12 +70,12 @@ const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleU
           fullWidth
           margin="dense"
           label="Link to Play the Game"
-          value={newSharedState ? `${server}/${gameID}` : ''}
+          value={newSharedState ? playUrl : ''}
           disabled={!newSharedState}
           InputProps={{
             readOnly: true,
             endAdornment: (
-              <IconButton onClick={() => handleCopy(`${server}/${gameID}`)} disabled={!newSharedState}>
+              <IconButton onClick={() => handleCopy(playUrl)} disabled={!newSharedState}>
                 <ContentCopyIcon />
               </IconButton>
             )

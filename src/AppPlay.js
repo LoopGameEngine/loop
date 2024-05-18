@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { initGoogleAPI, login } from './apis/googleAPI';
 import { useAppContext } from './AppContext';
 import Login from './pages/Login';
 import Resolution from './pages/Resolution';
 
-function AppPlay() {
+function AppPlay({ gameId }) {
   const { setToken, setGameID, CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES } = useAppContext();
-  const { gameId } = useParams();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setGameID(gameId);
+  }, [gameId, setGameID]);
 
   const handleLogin = async () => {
     try {
@@ -17,7 +19,6 @@ function AppPlay() {
       if (newToken) {
         setToken(newToken);
         setIsLoggedIn(true);
-        setGameID(gameId);
       } else {
         console.log("Error en el login: No se obtuvo el token");
       }
@@ -34,5 +35,4 @@ function AppPlay() {
 }
 
 export default AppPlay;
-
 
