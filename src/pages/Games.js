@@ -123,7 +123,7 @@ const Games = () => {
               key={game.id}
               game={game}
               handleEditGame={() => handleNavigation('edit', game.id)}
-              handlePlayGame={() => handleNavigation('test', game.id)}
+              handlePlayGame={() => handleNavigation('play', game.id)}
               handleDuplicateGame={() => handleAction(duplicateGame, handleShowFile, loopFolderID, game.id, game.name)}
               handleDeleteGame={() => handleAction(deleteGame, game.id, game.name)}
               handleShareGame={() => handleAction(shareGame, game.id, game.name)}
