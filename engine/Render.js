@@ -1,7 +1,6 @@
 class Render {
 
-    constructor(gameObjects, fullscreen) {
-        this.fullscreen = fullscreen;
+    constructor(gameObjects) {
         this.gameObjects = gameObjects;
         this.renderer = new PIXI.Renderer({ view: document.getElementById('canvas') });
         this.stage = new PIXI.Container();

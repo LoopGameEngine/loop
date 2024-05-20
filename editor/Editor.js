@@ -77,20 +77,20 @@ class Editor {
         var gameData = {};
         Object.assign(gameData, this.model);
         gameData = JSON.stringify(gameData, (key, value) => { if (key != "id") return value }, '\t');
-        const url = "../engine";
 
         const width = this.model.displayWidth - 13;
         const height = this.model.displayHeight - 35;
         const left = (window.screen.width - width) / 2;
         const top = (window.screen.height - height) / 2;
 
-        const messageData = {
+        var messageData = {
             type: 'playGame',
-            data: { gameID, token, API_KEY, DISCOVERY_DOCS, gameData }
+            data: { gameID, token, API_KEY, DISCOVERY_DOCS, gameData, fullscreen: false }
         };
 
+        messageData.data.gameData = gameData;
         if (this.playWindow && !this.playWindow.closed) this.playWindow.close();
-        this.playWindow = window.open(url, "_blank", `width=${width}, height=${height}, left=${left}, top=${top}, location=no`);
+        this.playWindow = window.open("../engine", "_blank", `width=${width}, height=${height}, left=${left}, top=${top}, location=no`);
         this.playWindow.onload = () => { this.playWindow.postMessage(messageData, window.location.origin); };
         window.addEventListener('focus', () => { this.canvasView.shouldRender = true; });
     }

@@ -1,7 +1,6 @@
 class Player {
 
-    constructor(gameID, fullscreen) {
-        this.fullscreen = fullscreen;
+    constructor(gameID) {
         this.file = new File();
         this.loader = new PIXI.Loader();
         this.playList = {};
@@ -10,6 +9,7 @@ class Player {
         this.load = new LoadingView("white", "#353535");
         const gameContainer = document.getElementById('game-container');
         gameContainer.appendChild(this.load.html);
+        console.log("player", gameData);
         (editor) ? this.onJsonLoaded(JSON.parse(gameData)) :
             this.file.loadJson(this.gameId, this.onJsonLoaded.bind(this));
     }
@@ -27,6 +27,6 @@ class Player {
     onSoundsLoaded(playList) {
         this.json.soundList = Object.keys(playList);
         this.load.closeDialog();
-        new Engine(new Game(this.json), this.fullscreen);
+        new Engine(new Game(this.json));
     }
 }
