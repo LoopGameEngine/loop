@@ -1,18 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  Switch,
-  FormControlLabel,
-  TextField,
-  Snackbar,
-  IconButton,
-  Typography,
-  Box
-} from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Switch, FormControlLabel, TextField, Snackbar, IconButton, Typography, Box } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleUnshareGame, handleShareToggle, isShared }) => {
@@ -22,7 +9,7 @@ const ShareDialog = ({ open, onClose, gameName, gameID, handleShareGame, handleU
 
   useEffect(() => {
     if (open) {
-      setNewSharedState(isShared); // Reset the local state when the dialog opens
+      setNewSharedState(isShared); 
     }
   }, [open, isShared]);
 

@@ -7,7 +7,8 @@
 </head>
 
 <body>
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/material-components-web@10.0.0/dist/material-components-web.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://unpkg.com/material-components-web@10.0.0/dist/material-components-web.min.css">
     <script src="libraries/math.js"></script>
     <script src="libraries/pixi.min.js"></script>
     <script src="libraries/Planck.js"></script>
@@ -74,11 +75,10 @@
                 token = message.data.token;
                 API_KEY = message.data.API_KEY;
                 DISCOVERY_DOCS = message.data.DISCOVERY_DOCS;
+                gameData = message.data.gameData;
+                if (gameData) editor = true;
                 fullscreen = message.data.fullscreen;
-
-                // Adjust canvas mode based on fullscreen value
                 document.body.id = fullscreen ? 'fullscreen' : 'windowed';
-
                 gapiLoading();
             }
         });
@@ -92,7 +92,7 @@
                     if (token) {
                         gapi.client.setToken(token);
                     }
-                    player = new Player(gameID, fullscreen);
+                    player = new Player(gameID);
                 }).catch(error => {
                     console.error("Failed to initialize GAPI client", error);
                 });

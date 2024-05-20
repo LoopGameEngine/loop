@@ -17,12 +17,11 @@ body {
 
 canvas {
     display: block;
-    background: black;
 }
 
 /* Windowed mode */
 #windowed #canvas {
-    position: relative;
+    position: absolute;
     max-width: 100%;
     max-height: 100%;
     width: auto;

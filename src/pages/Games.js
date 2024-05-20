@@ -42,6 +42,7 @@ const Games = () => {
       setLoading(true);
       const gameName = args[args.length - 1];
       let actionName = action.name.replace(/Game/g, '').replace(/([A-Z])/g, ' $1').toLowerCase().trim();
+      console.log(action.name, actionName);
       if (!actionName.includes('share')) {
         let confirmationMessage = `Are you sure you want to ${actionName} ${gameName}?`;
         const confirmed = window.confirm(confirmationMessage);
