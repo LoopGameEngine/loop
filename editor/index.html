@@ -123,7 +123,7 @@
 	<script>
 
 		let app, gameID, token, API_KEY, DISCOVERY_DOCS;
-		let gapiInitialized = false; 
+		let gapiInitialized = false;
 
 		window.addEventListener('message', (event) => {
 			if (event.origin !== window.location.origin) return;
@@ -139,7 +139,6 @@
 				token = message.data.token;
 				if (gapiInitialized) {
 					gapi.client.setToken(token);
-					console.log('Token actualizado');
 				}
 			}
 		});
