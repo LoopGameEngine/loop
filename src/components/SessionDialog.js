@@ -10,8 +10,18 @@ const SessionDialog = ({ open, onLogin, onClose }) => (
       </DialogContentText>
     </DialogContent>
     <DialogActions>
-      <Button onClick={onLogin} color="primary">Login</Button>
-      <Button onClick={onClose} color="secondary">Cancel</Button>
+      <Button
+        onClick={onLogin}
+        variant="contained"
+      >
+        Login
+      </Button>
+      <Button
+        onClick={onClose}
+        variant="outlined"
+      >
+        Cancel
+      </Button>
     </DialogActions>
   </Dialog>
 );

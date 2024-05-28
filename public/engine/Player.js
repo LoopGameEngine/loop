@@ -9,7 +9,6 @@ class Player {
         this.load = new LoadingView("white", "#353535");
         const gameContainer = document.getElementById('game-container');
         gameContainer.appendChild(this.load.html);
-        console.log("player", gameData);
         (editor) ? this.onJsonLoaded(JSON.parse(gameData)) :
             this.file.loadJson(this.gameId, this.onJsonLoaded.bind(this));
     }

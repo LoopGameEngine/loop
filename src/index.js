@@ -7,7 +7,6 @@ import { AppContextProvider } from './AppContext';
 import theme from './theme';
 import { ThemeProvider } from '@mui/material/styles';
 
-// Componente para decidir cuál componente renderizar
 const AppRouter = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
