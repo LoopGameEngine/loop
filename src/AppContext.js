@@ -1,4 +1,3 @@
-// AppContext.js
 import React, { createContext, useContext, useState } from 'react';
 
 const AppContext = createContext();
@@ -12,6 +11,7 @@ export const AppContextProvider = ({ children }) => {
     const [gameID, setGameID] = useState(null);
     const [expirationTimestamp, setExpirationTimestamp] = useState(null);
     const [isSessionActive, setIsSessionActive] = useState(false);
+    const [timeRemaining, setTimeRemaining] = useState(null);  // Agregar estado timeRemaining
     const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
     const API_KEY = process.env.REACT_APP_API_KEY;
     const DISCOVERY_DOCS = process.env.REACT_APP_DISCOVERY_DOCS.split(' ');
@@ -27,6 +27,7 @@ export const AppContextProvider = ({ children }) => {
             gameID, setGameID,
             expirationTimestamp, setExpirationTimestamp,
             isSessionActive, setIsSessionActive,
+            timeRemaining, setTimeRemaining,  // Incluir timeRemaining en el contexto
             CLIENT_ID,
             API_KEY,
             DISCOVERY_DOCS,
@@ -38,5 +39,3 @@ export const AppContextProvider = ({ children }) => {
 };
 
 export const useAppContext = () => useContext(AppContext);
-
-

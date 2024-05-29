@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import React from 'react';
 import App from './App';
 import AppPlay from './AppPlay';
@@ -14,12 +14,7 @@ const AppRouter = () => {
 
   return (
     <Routes>
-      {gameId ? (
-        <Route path="*" element={<AppPlay gameId={gameId} />} />
-      ) : (
-        <Route path="*" element={<App />} />
-      )}
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={gameId ? <AppPlay gameId={gameId} /> : <App />} />
     </Routes>
   );
 };
@@ -35,3 +30,4 @@ root.render(
     </AppContextProvider>
   </BrowserRouter>
 );
+

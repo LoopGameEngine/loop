@@ -1,4 +1,3 @@
-// NavBar.js
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Button, Avatar, Box, Tooltip } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -27,7 +26,6 @@ const NavBar = ({ handleLogin, handleLogout }) => {
 
   const onLogoutClick = () => {
     handleLogout();
-    navigate('/');
     handleMenuClose();
   };
 
@@ -73,4 +71,3 @@ const NavBar = ({ handleLogin, handleLogout }) => {
 };
 
 export default NavBar;
-
