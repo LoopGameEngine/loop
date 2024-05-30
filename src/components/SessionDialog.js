@@ -12,10 +12,10 @@ const SessionDialog = ({ open, onLogin, onClose }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onLogin} variant="contained" >
-          Iniciar Sesión
+          Login
         </Button>
         <Button onClick={onClose} variant="outlined">
-          Cancelar
+          Cancel
         </Button>
       </DialogActions>
     </Dialog>

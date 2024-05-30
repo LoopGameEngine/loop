@@ -9,6 +9,10 @@ const UserMenu = ({ userInfo, onMyGamesClick, onLogoutClick, anchorEl, onClose }
   const minutes = Math.floor(timeRemaining / 60000);
   const seconds = Math.floor((timeRemaining % 60000) / 1000);
 
+  const sessionTimeDisplay = minutes <= 0 && seconds <= 0
+    ? "Session is Over"
+    : `Session Time: ${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+
   return (
     <>
       {userInfo ? (
@@ -21,7 +25,7 @@ const UserMenu = ({ userInfo, onMyGamesClick, onLogoutClick, anchorEl, onClose }
             <Avatar alt={userInfo.name} src={userInfo.picture} sx={{ margin: 'auto', width: 124, height: 124 }} />
             <Typography variant="body1" sx={{ marginTop: 1, fontWeight: 'bold' }}>{userInfo.name}</Typography>
             <Typography variant="body2" sx={{ marginTop: 1 }}>
-              Session Time: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+              {sessionTimeDisplay}
             </Typography>
           </div>
           <Divider />
@@ -44,4 +48,3 @@ const UserMenu = ({ userInfo, onMyGamesClick, onLogoutClick, anchorEl, onClose }
 };
 
 export default UserMenu;
-

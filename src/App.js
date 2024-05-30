@@ -32,8 +32,6 @@ function App() {
         setTimeRemaining(timeLeft);
 
         if (timeLeft <= 0 && isSessionActive) {
-          console.log('La sesión ha expirado');
-          // setIsSessionActive(false);
           setSessionDialogOpen(true);
           clearInterval(checkSession);
         }
@@ -41,7 +39,7 @@ function App() {
     }, 1000);
 
     return () => clearInterval(checkSession);
-  }, [expirationTimestamp, isSessionActive, setIsSessionActive, setTimeRemaining]);
+  }, [expirationTimestamp, isSessionActive, setTimeRemaining]);
 
   const handleLogin = useCallback(async () => {
     setSessionDialogOpen(false);

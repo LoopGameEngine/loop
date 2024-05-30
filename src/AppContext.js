@@ -19,19 +19,18 @@ export const AppContextProvider = ({ children }) => {
 
     return (
         <AppContext.Provider value={{
+            CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES,
             token, setToken,
             userInfo, setUserInfo,
+
             loopFolderID, setLoopFolderID,
             gameList, setGameList,
             updateGameList, setUpdateGameList,
             gameID, setGameID,
+
             expirationTimestamp, setExpirationTimestamp,
             isSessionActive, setIsSessionActive,
-            timeRemaining, setTimeRemaining,  // Incluir timeRemaining en el contexto
-            CLIENT_ID,
-            API_KEY,
-            DISCOVERY_DOCS,
-            SCOPES
+            timeRemaining, setTimeRemaining
         }}>
             {children}
         </AppContext.Provider>
