@@ -48,8 +48,8 @@ function App() {
     setIsSessionActive(true);
     setToken(newToken);
 
-    let expiresIn = newToken.expires_in - 300; // cinco minutos menos
-    expiresIn = 20; // En producción, quita esta línea
+    let expiresIn = newToken.expires_in; // cinco minutos menos
+    //expiresIn = 20; // En producción, quita esta línea
     const expirationTimestamp = new Date().getTime() + expiresIn * 1000;
     setExpirationTimestamp(expirationTimestamp);
 
