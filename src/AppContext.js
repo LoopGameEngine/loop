@@ -8,7 +8,6 @@ export const AppContextProvider = ({ children }) => {
     const [loopFolderID, setLoopFolderID] = useState(null);
     const [gameList, setGameList] = useState([]);
     const [gameID, setGameID] = useState(null);
-   // const [expirationTimestamp, setExpirationTimestamp] = useState(null);
     const [isSessionActive, setIsSessionActive] = useState(false);
     const [timeRemaining, setTimeRemaining] = useState(null);
     const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
@@ -26,7 +25,6 @@ export const AppContextProvider = ({ children }) => {
             gameList, setGameList,
             gameID, setGameID,
 
-          // expirationTimestamp, setExpirationTimestamp,
             isSessionActive, setIsSessionActive,
             timeRemaining, setTimeRemaining
         }}>
