@@ -19,10 +19,11 @@ function App() {
   const isFullPage = location.pathname === '/edit';
   const isHome = location.pathname === '/';
   const {
-    setToken, setUserInfo, setLoopFolderID, setGameList, setUpdateGameList,
-    expirationTimestamp, setExpirationTimestamp, isSessionActive, setIsSessionActive, setTimeRemaining, CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES
+    setToken, setUserInfo, setLoopFolderID, setGameList,
+    isSessionActive, setIsSessionActive, setTimeRemaining, CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES
   } = useAppContext();
   const [sessionDialogOpen, setSessionDialogOpen] = useState(false);
+  const [expirationTimestamp, setExpirationTimestamp] = useState(null);
 
   useEffect(() => {
     const checkSession = setInterval(() => {
@@ -48,30 +49,22 @@ function App() {
     setIsSessionActive(true);
     setToken(newToken);
 
-    let expiresIn = newToken.expires_in; // cinco minutos menos
+    let expiresIn = newToken.expires_in;
     //expiresIn = 20; // En producción, quita esta línea
     const expirationTimestamp = new Date().getTime() + expiresIn * 1000;
     setExpirationTimestamp(expirationTimestamp);
-
-    // Verificar o crear carpeta de Loop
     let newFolderID = await folderExists("Loop");
     if (!newFolderID) {
       newFolderID = await createFolder("Loop", 'root');
     }
     setLoopFolderID(newFolderID);
-
-    // Obtener información del usuario
     const newUserInfo = await getUserInfo(newToken.access_token);
     setUserInfo(newUserInfo);
-    setUpdateGameList(true);
-
-    // Redirigir a /games si se está en la página de inicio
     if (isHome) navigate('/games');
   }, [
     CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES,
     setIsSessionActive, setToken, setExpirationTimestamp,
-    setLoopFolderID, setUserInfo, setUpdateGameList,
-    isHome, navigate
+    setLoopFolderID, setUserInfo, isHome, navigate
   ]);
 
   const handleLogout = useCallback(async () => {

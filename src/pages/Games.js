@@ -9,29 +9,28 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import GameCard from '../components/GameCard';
 import { useAppContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
-import CopyGameDialog from '../components/CopyGameDialog'; // Importa el componente de diálogo
+import CopyGameDialog from '../components/CopyGameDialog';
 
 const Games = () => {
-  const { loopFolderID, gameList, setGameList, setGameID, updateGameList, setUpdateGameList } = useAppContext();
+  const { loopFolderID, gameList, setGameList, setGameID } = useAppContext();
   const [loading, setLoading] = useState(false);
-  const [showCopyDialog, setShowCopyDialog] = useState(false); // Estado para controlar la visibilidad del diálogo
+  const [showCopyDialog, setShowCopyDialog] = useState(false);
   const navigate = useNavigate();
   const [showFile, setShowFile] = useState('');
 
-  const fetchGames = useCallback(async () => {
+  const updateGameList = useCallback(async () => {
     try {
       setLoading(true);
       const newUpdatedGameList = await listDriveGames(loopFolderID);
       setGameList(newUpdatedGameList);
-      setUpdateGameList(false);
     } catch (error) {
-      console.error('Error fetching games:', error);
+      console.error('Error updating game list:', error);
     } finally { setLoading(false) }
-  }, [loopFolderID, setGameList, setUpdateGameList]);
+  }, [loopFolderID, setGameList]);
 
   useEffect(() => {
-    if (updateGameList) fetchGames();
-  }, [updateGameList, fetchGames]);
+    if (!gameList.length) updateGameList();
+  }, [gameList, updateGameList]);
 
   const handleShowFile = useCallback((fileName) => {
     setShowFile(fileName);
@@ -42,14 +41,13 @@ const Games = () => {
       setLoading(true);
       const gameName = args[args.length - 1];
       let actionName = action.name.replace(/Game/g, '').replace(/([A-Z])/g, ' $1').toLowerCase().trim();
-      console.log(action.name, actionName);
       if (!actionName.includes('share')) {
         let confirmationMessage = `Are you sure you want to ${actionName} ${gameName}?`;
         const confirmed = window.confirm(confirmationMessage);
         if (!confirmed) return setLoading(false);
       }
       await action(...args);
-      setUpdateGameList(true);
+      updateGameList();
       setShowFile('');
     } catch (error) {
       console.error('Error performing game operation:', error.message);

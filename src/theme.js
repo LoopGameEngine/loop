@@ -1,25 +1,32 @@
 import { createTheme } from '@mui/material/styles';
 
+const colors = {
+  primaryMain: '#2E64EC',
+  secondaryMain: '#FFC107',
+  white: '#FFFFFF',
+  darkOverlay: 'rgba(35, 35, 35, 0.5)',
+};
+
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#2E64EC',
+      main: colors.primaryMain,
     },
     secondary: {
-      main: '#FFC107',
+      main: colors.secondaryMain,
     },
   },
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
   },
-  // Definiciones de estilos personalizados
+  // personalized styles
   customStyles: {
     footer: {
       py: 3,
       px: 2,
       mt: 'auto',
-      backgroundColor: '#2E64EC', 
-      color: '#FFFFFF', 
+      backgroundColor: colors.primaryMain,
+      color: colors.white,
     },
   },
   heroSection: {
@@ -33,7 +40,7 @@ const theme = createTheme({
       padding: '36px',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      backgroundColor: '#2E64EC', 
+      backgroundColor: colors.primaryMain,
     },
     overlay: {
       position: 'absolute',
@@ -41,7 +48,7 @@ const theme = createTheme({
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: 'rgba(35, 35, 35, 0.5)',
+      backgroundColor: colors.darkOverlay,
       zIndex: 0,
     },
     content: {
@@ -54,11 +61,11 @@ const theme = createTheme({
       marginBottom: '40px',
     },
     title: {
-      color: '#fff',
+      color: colors.white,
       marginBottom: '20px',
     },
     subtitle: {
-      color: '#fff',
+      color: colors.white,
       marginBottom: '20px',
     },
     startButton: {

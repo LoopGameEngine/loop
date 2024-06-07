@@ -8,7 +8,7 @@ function Edit() {
   const navigate = useNavigate();
   const iframeRef = useRef(null);
   const [isIframeLoaded, setIsIframeLoaded] = useState(false);
-  const [iframeInitialized, setIframeInitialized] = useState(false);
+  const [isIframeInitialized, setIsIframeInitialized] = useState(false);
   const theme = useTheme();
 
   const handleCloseEditor = useCallback((event) => {
@@ -20,8 +20,8 @@ function Edit() {
         return game;
       });
       setGameList(updatedList);
-      setIsIframeLoaded(false); // Resetear el estado de carga del iframe al cerrar el editor
-      setIframeInitialized(false); // Restablecer a false para permitir una nueva inicialización si se vuelve a abrir el editor
+      setIsIframeLoaded(false);
+      setIsIframeInitialized(false);
       navigate('/games');
     }
   }, [navigate, gameList, setGameList]);
@@ -33,36 +33,30 @@ function Edit() {
     };
   }, [handleCloseEditor]);
 
-  useEffect(() => {
-    const currentIframe = iframeRef.current;
-    if (currentIframe) {
-      currentIframe.onload = () => {
-        setIsIframeLoaded(true); // Marcar el iframe como cargado
-      };
-    }
-  }, []); // Este efecto se ejecuta una sola vez al montar
+  const handleIframeLoad = () => {
+    setIsIframeLoaded(true);
+  };
 
   useEffect(() => {
-    // Envía el mensaje inicial o de actualización al iframe según corresponda
-    if (isIframeLoaded && token) {
-      let messageData;
-      if (!iframeInitialized) {
-        // Mensaje de inicialización inicial
-        messageData = {
-          type: 'initEditor',
-          data: { gameID, token, API_KEY, DISCOVERY_DOCS },
-        };
-        setIframeInitialized(true); // Marcar el iframe como inicializado
-      } else {
-        // Mensaje de actualización de token
-        messageData = {
-          type: 'updateToken',
-          data: { token },
-        };
-      }
+    if (isIframeLoaded && token && !isIframeInitialized) {
+      const messageData = {
+        type: 'initEditor',
+        data: { gameID, token, API_KEY, DISCOVERY_DOCS },
+      };
+      iframeRef.current.contentWindow.postMessage(messageData, window.location.origin);
+      setIsIframeInitialized(true);
+    }
+  }, [isIframeLoaded, token, isIframeInitialized, gameID, API_KEY, DISCOVERY_DOCS]);
+
+  useEffect(() => {
+    if (isIframeInitialized && token) {
+      const messageData = {
+        type: 'updateToken',
+        data: { token },
+      };
       iframeRef.current.contentWindow.postMessage(messageData, window.location.origin);
     }
-  }, [gameID, token, API_KEY, DISCOVERY_DOCS, isIframeLoaded, iframeInitialized]);
+  }, [token, isIframeInitialized]);
 
   return (
     <div style={{ width: '100%', height: '100vh', overflow: 'hidden', backgroundColor: theme.palette.primary.main }}>
@@ -72,12 +66,10 @@ function Edit() {
         ref={iframeRef}
         src="/editor/index.html"
         style={{ width: '100%', height: '100%', border: 'none' }}
+        onLoad={handleIframeLoad}
       ></iframe>
     </div>
   );
 }
 
 export default Edit;
-
-
-

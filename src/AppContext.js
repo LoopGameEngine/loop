@@ -7,11 +7,10 @@ export const AppContextProvider = ({ children }) => {
     const [userInfo, setUserInfo] = useState(null);
     const [loopFolderID, setLoopFolderID] = useState(null);
     const [gameList, setGameList] = useState([]);
-    const [updateGameList, setUpdateGameList] = useState(true);
     const [gameID, setGameID] = useState(null);
-    const [expirationTimestamp, setExpirationTimestamp] = useState(null);
+   // const [expirationTimestamp, setExpirationTimestamp] = useState(null);
     const [isSessionActive, setIsSessionActive] = useState(false);
-    const [timeRemaining, setTimeRemaining] = useState(null);  // Agregar estado timeRemaining
+    const [timeRemaining, setTimeRemaining] = useState(null);
     const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
     const API_KEY = process.env.REACT_APP_API_KEY;
     const DISCOVERY_DOCS = process.env.REACT_APP_DISCOVERY_DOCS.split(' ');
@@ -25,10 +24,9 @@ export const AppContextProvider = ({ children }) => {
 
             loopFolderID, setLoopFolderID,
             gameList, setGameList,
-            updateGameList, setUpdateGameList,
             gameID, setGameID,
 
-            expirationTimestamp, setExpirationTimestamp,
+          // expirationTimestamp, setExpirationTimestamp,
             isSessionActive, setIsSessionActive,
             timeRemaining, setTimeRemaining
         }}>
