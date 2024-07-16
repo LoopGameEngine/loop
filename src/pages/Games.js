@@ -25,16 +25,20 @@ const Games = () => {
       setGameList(newUpdatedGameList);
     } catch (error) {
       console.error('Error updating game list:', error);
-    } finally { setLoading(false) }
+    } finally {
+      setLoading(false);
+    }
   }, [loopFolderID, setGameList]);
 
   useEffect(() => {
-    if (!gameList.length) updateGameList();
+    if (gameList === null) {
+      updateGameList();
+    }
   }, [gameList, updateGameList]);
 
   const handleShowFile = useCallback((fileName) => {
     setShowFile(fileName);
-  }, [setShowFile]);
+  }, []);
 
   const handleAction = async (action, ...args) => {
     try {
@@ -104,7 +108,7 @@ const Games = () => {
             variant="outlined"
             color="primary"
             startIcon={<ContentCopyIcon />}
-            onClick={handleCopyGameDialogOpen} // Abre el diálogo al hacer clic en este botón
+            onClick={handleCopyGameDialogOpen}
             disabled={loading}
             style={{ marginBottom: '16px' }}
           >
@@ -117,18 +121,22 @@ const Games = () => {
           gap: '24px',
           justifyContent: 'center',
         }}>
-          {gameList.map((game) => (
-            <GameCard
-              key={game.id}
-              game={game}
-              handleEditGame={() => handleNavigation('edit', game.id)}
-              handlePlayGame={() => handleNavigation('play', game.id)}
-              handleDuplicateGame={() => handleAction(duplicateGame, handleShowFile, loopFolderID, game.id, game.name)}
-              handleDeleteGame={() => handleAction(deleteGame, game.id, game.name)}
-              handleShareGame={() => handleAction(shareGame, game.id, game.name)}
-              handleUnshareGame={() => handleAction(unshareGame, game.id, game.name)}
-            />
-          ))}
+          {gameList && gameList.length > 0 ? (
+            gameList.map((game) => (
+              <GameCard
+                key={game.id}
+                game={game}
+                handleEditGame={() => handleNavigation('edit', game.id)}
+                handlePlayGame={() => handleNavigation('play', game.id)}
+                handleDuplicateGame={() => handleAction(duplicateGame, handleShowFile, loopFolderID, game.id, game.name)}
+                handleDeleteGame={() => handleAction(deleteGame, game.id, game.name)}
+                handleShareGame={() => handleAction(shareGame, game.id, game.name)}
+                handleUnshareGame={() => handleAction(unshareGame, game.id, game.name)}
+              />
+            ))
+          ) : (
+            <Typography variant="h6" color="textSecondary">No games available</Typography>
+          )}
         </div>
       </div>
       <CopyGameDialog

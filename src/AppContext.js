@@ -6,7 +6,7 @@ export const AppContextProvider = ({ children }) => {
     const [token, setToken] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
     const [loopFolderID, setLoopFolderID] = useState(null);
-    const [gameList, setGameList] = useState([]);
+    const [gameList, setGameList] = useState(null);
     const [gameID, setGameID] = useState(null);
     const [isSessionActive, setIsSessionActive] = useState(false);
     const [timeRemaining, setTimeRemaining] = useState(null);

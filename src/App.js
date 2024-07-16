@@ -48,9 +48,8 @@ function App() {
     const newToken = await login();
     setIsSessionActive(true);
     setToken(newToken);
-
     let expiresIn = newToken.expires_in;
-    //expiresIn = 20; // En producción, quita esta línea
+    //expiresIn = 20; // In production, remove this line
     const expirationTimestamp = new Date().getTime() + expiresIn * 1000;
     setExpirationTimestamp(expirationTimestamp);
     let newFolderID = await folderExists("Loop");
@@ -72,7 +71,7 @@ function App() {
     setToken(null);
     setUserInfo(null);
     setLoopFolderID(null);
-    setGameList([]);
+    setGameList(null);
     setIsSessionActive(false);
     setSessionDialogOpen(false);
     navigate('/');
