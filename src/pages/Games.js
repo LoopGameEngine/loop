@@ -134,9 +134,7 @@ const Games = () => {
                 handleUnshareGame={() => handleAction(unshareGame, game.id, game.name)}
               />
             ))
-          ) : (
-            <Typography variant="h6" color="textSecondary">Start by creating a new game!</Typography>
-          )}
+          ) : null}
         </div>
       </div>
       <CopyGameDialog
@@ -149,3 +147,4 @@ const Games = () => {
 };
 
 export default Games;
+
