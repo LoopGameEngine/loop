@@ -135,7 +135,7 @@ const Games = () => {
               />
             ))
           ) : (
-            <Typography variant="h6" color="textSecondary">No games available</Typography>
+            <Typography variant="h6" color="textSecondary">Start by creating a new game!</Typography>
           )}
         </div>
       </div>
